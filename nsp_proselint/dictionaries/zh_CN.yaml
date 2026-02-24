@@ -330,24 +330,24 @@ entries:
     severity: "replace"
     detect: "仿佛.*?(?:在|要).*?(?:诉说|倾诉|传达)[^，。！？；、]*"
     replacements:
-      - "带着某种说不出的东西"
-      - "有了些旁人看不懂的意味"
-      - "变得有些遥远"
+      - "仿佛藏着什么不愿说的事"
+      - "仿佛有话要讲却咽了回去"
+      - "仿佛指向某个遥远的地方"
     test_cases:
       - input: "仿佛在诉说着什么深沉的往事"
         valid_outputs:
-          - "带着某种说不出的东西"
-          - "有了些旁人看不懂的意味"
-          - "变得有些遥远"
+          - "仿佛藏着什么不愿说的事"
+          - "仿佛有话要讲却咽了回去"
+          - "仿佛指向某个遥远的地方"
       - input: "仿佛要传达什么"
         valid_outputs:
-          - "带着某种说不出的东西"
-          - "有了些旁人看不懂的意味"
-          - "变得有些遥远"
+          - "仿佛藏着什么不愿说的事"
+          - "仿佛有话要讲却咽了回去"
+          - "仿佛指向某个遥远的地方"
     negative_cases:
       - "她向朋友诉说了自己的遭遇"
       - "他在文章中传达了重要的信息"
-    notes: "Trailing content consumed by [^punc]* to handle 着什么深沉的往事"
+    notes: "Replacements keep 仿佛 prefix to match the adverbial clause slot of the original"
 
   # ============================================================
   # Vague Emotion

@@ -20,11 +20,9 @@
     "severity": "replace",
     "detect": "(?:[Aa]n? )?(?:smirk|smile) (?:tugged|played|danced) at (?:the corner of )?(?:his|her|their) lips",
     "replacements": [
-      "almost smiled",
-      "fought back a grin",
-      "allowed a thin smile",
-      "the mouth softened",
-      "amusement crept in"
+      "a flicker of amusement crossed that face",
+      "the mouth softened just slightly",
+      "a near-smile appeared and vanished"
     ]
   },
   {
@@ -207,9 +205,9 @@
     "severity": "replace",
     "detect": "(?:[Hh]is|[Hh]er|[Tt]heir) eyes widened (?:in|with) (?:surprise|shock|disbelief|horror|fear)",
     "replacements": [
-      "went very still",
-      "the reaction was instant and visible",
-      "froze for half a second"
+      "the shock registered on that face",
+      "every muscle went still for a beat",
+      "the reaction was instant and visible"
     ]
   },
   {
@@ -219,9 +217,9 @@
     "severity": "replace",
     "detect": "[Aa] (?:sly|cunning|knowing|mischievous) (?:smirk|grin|smile) (?:played|spread|crept|appeared) (?:on|across|over) (?:his|her|their) (?:lips|face)",
     "replacements": [
-      "looked like someone holding a winning hand",
-      "wore an expression that gave nothing away",
-      "the amusement was barely hidden"
+      "an expression settled that gave nothing away",
+      "something sharp and amused flickered across that face",
+      "a look appeared that said more than words could"
     ]
   },
   {
@@ -231,9 +229,9 @@
     "severity": "replace",
     "detect": "[Aa] (?:teasing|mocking|playful|wicked) (?:glint|gleam|spark|light) in (?:his|her|their) eyes",
     "replacements": [
-      "something sharp behind the casual look",
-      "eyes that said more than the words did",
-      "a look that dared a response"
+      "something sharp lurking behind that casual look",
+      "a gaze that said more than the words did",
+      "a look that dared someone to respond"
     ]
   },
   {
@@ -265,7 +263,7 @@
     "category": "emotion_cliche",
     "type": "full",
     "severity": "replace",
-    "detect": "[Aa] mix (?:of|between) \\w+ and \\w+ (?:washed|swept|crashed|flooded) over",
+    "detect": "[Aa] mix (?:of|between) \\w+ and \\w+ (?:washed|swept|crashed|flooded) over (?:him|her|them)",
     "replacements": [
       "too many feelings hit at once",
       "the reaction was tangled and immediate",
@@ -280,8 +278,8 @@
     "detect": "(?:mechanically|robotically|numbly) ",
     "replacements": [
       "dully ",
-      "on autopilot, ",
-      "without thinking, "
+      "absently ",
+      "blankly "
     ]
   },
   {

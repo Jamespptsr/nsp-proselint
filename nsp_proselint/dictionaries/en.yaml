@@ -42,29 +42,24 @@ entries:
     severity: "replace"
     detect: "(?:[Aa]n? )?(?:smirk|smile) (?:tugged|played|danced) at (?:the corner of )?(?:his|her|their) lips"
     replacements:
-      - "almost smiled"
-      - "fought back a grin"
-      - "allowed a thin smile"
-      - "the mouth softened"
-      - "amusement crept in"
+      - "a flicker of amusement crossed that face"
+      - "the mouth softened just slightly"
+      - "a near-smile appeared and vanished"
     test_cases:
       - input: "A smile tugged at the corner of her lips."
         valid_outputs:
-          - "almost smiled."
-          - "fought back a grin."
-          - "allowed a thin smile."
-          - "the mouth softened."
-          - "amusement crept in."
+          - "a flicker of amusement crossed that face."
+          - "the mouth softened just slightly."
+          - "a near-smile appeared and vanished."
       - input: "a smirk played at his lips"
         valid_outputs:
-          - "almost smiled"
-          - "fought back a grin"
-          - "allowed a thin smile"
-          - "the mouth softened"
-          - "amusement crept in"
+          - "a flicker of amusement crossed that face"
+          - "the mouth softened just slightly"
+          - "a near-smile appeared and vanished"
     negative_cases:
       - "She smiled at him warmly."
       - "His lips were dry."
+    notes: "Replacements are full noun-phrase subjects to avoid subject-swallowing"
 
   # ============================================================
   # Breath / Physical
@@ -452,23 +447,24 @@ entries:
     severity: "replace"
     detect: "(?:[Hh]is|[Hh]er|[Tt]heir) eyes widened (?:in|with) (?:surprise|shock|disbelief|horror|fear)"
     replacements:
-      - "went very still"
+      - "the shock registered on that face"
+      - "every muscle went still for a beat"
       - "the reaction was instant and visible"
-      - "froze for half a second"
     test_cases:
       - input: "Her eyes widened in surprise"
         valid_outputs:
-          - "went very still"
+          - "the shock registered on that face"
+          - "every muscle went still for a beat"
           - "the reaction was instant and visible"
-          - "froze for half a second"
       - input: "His eyes widened with disbelief"
         valid_outputs:
-          - "went very still"
+          - "the shock registered on that face"
+          - "every muscle went still for a beat"
           - "the reaction was instant and visible"
-          - "froze for half a second"
     negative_cases:
       - "Her eyes were wide and blue."
       - "He widened the gap."
+    notes: "Replacements include full subject to avoid orphaned verb phrases"
 
   - id: "en_sly_smirk"
     category: "expression_cliche"
@@ -476,23 +472,24 @@ entries:
     severity: "replace"
     detect: "[Aa] (?:sly|cunning|knowing|mischievous) (?:smirk|grin|smile) (?:played|spread|crept|appeared) (?:on|across|over) (?:his|her|their) (?:lips|face)"
     replacements:
-      - "looked like someone holding a winning hand"
-      - "wore an expression that gave nothing away"
-      - "the amusement was barely hidden"
+      - "an expression settled that gave nothing away"
+      - "something sharp and amused flickered across that face"
+      - "a look appeared that said more than words could"
     test_cases:
       - input: "A sly smirk played on her lips"
         valid_outputs:
-          - "looked like someone holding a winning hand"
-          - "wore an expression that gave nothing away"
-          - "the amusement was barely hidden"
+          - "an expression settled that gave nothing away"
+          - "something sharp and amused flickered across that face"
+          - "a look appeared that said more than words could"
       - input: "a knowing grin spread across his face"
         valid_outputs:
-          - "looked like someone holding a winning hand"
-          - "wore an expression that gave nothing away"
-          - "the amusement was barely hidden"
+          - "an expression settled that gave nothing away"
+          - "something sharp and amused flickered across that face"
+          - "a look appeared that said more than words could"
     negative_cases:
       - "She smiled warmly."
       - "He grinned at the joke."
+    notes: "Replacements are full clauses with subjects to avoid orphaned verbs"
 
   - id: "en_teasing_glint"
     category: "expression_cliche"
@@ -500,23 +497,24 @@ entries:
     severity: "replace"
     detect: "[Aa] (?:teasing|mocking|playful|wicked) (?:glint|gleam|spark|light) in (?:his|her|their) eyes"
     replacements:
-      - "something sharp behind the casual look"
-      - "eyes that said more than the words did"
-      - "a look that dared a response"
+      - "something sharp lurking behind that casual look"
+      - "a gaze that said more than the words did"
+      - "a look that dared someone to respond"
     test_cases:
       - input: "A teasing glint in her eyes"
         valid_outputs:
-          - "something sharp behind the casual look"
-          - "eyes that said more than the words did"
-          - "a look that dared a response"
+          - "something sharp lurking behind that casual look"
+          - "a gaze that said more than the words did"
+          - "a look that dared someone to respond"
       - input: "a mocking gleam in his eyes"
         valid_outputs:
-          - "something sharp behind the casual look"
-          - "eyes that said more than the words did"
-          - "a look that dared a response"
+          - "something sharp lurking behind that casual look"
+          - "a gaze that said more than the words did"
+          - "a look that dared someone to respond"
     negative_cases:
       - "Her eyes were bright."
       - "A light shone in the distance."
+    notes: "Replacements are noun phrases matching the original noun-phrase slot"
 
   # ============================================================
   # Tone / Manner Cliches
@@ -574,18 +572,18 @@ entries:
     category: "emotion_cliche"
     type: "full"
     severity: "replace"
-    detect: "[Aa] mix (?:of|between) \\w+ and \\w+ (?:washed|swept|crashed|flooded) over"
+    detect: "[Aa] mix (?:of|between) \\w+ and \\w+ (?:washed|swept|crashed|flooded) over (?:him|her|them)"
     replacements:
       - "too many feelings hit at once"
       - "the reaction was tangled and immediate"
       - "everything collided inside"
     test_cases:
-      - input: "A mix of relief and anger washed over"
+      - input: "A mix of relief and anger washed over him"
         valid_outputs:
           - "too many feelings hit at once"
           - "the reaction was tangled and immediate"
           - "everything collided inside"
-      - input: "a mix between joy and sorrow swept over"
+      - input: "a mix between joy and sorrow swept over her"
         valid_outputs:
           - "too many feelings hit at once"
           - "the reaction was tangled and immediate"
@@ -593,6 +591,7 @@ entries:
     negative_cases:
       - "A wave washed over the deck."
       - "She mixed the ingredients together."
+    notes: "Detect now consumes the trailing pronoun to prevent orphaned 'him/her' after replacement"
 
   - id: "en_mechanically"
     category: "numb_cliche"
@@ -601,22 +600,23 @@ entries:
     detect: "(?:mechanically|robotically|numbly) "
     replacements:
       - "dully "
-      - "on autopilot, "
-      - "without thinking, "
+      - "absently "
+      - "blankly "
     test_cases:
       - input: "She mechanically typed the message."
         valid_outputs:
           - "She dully typed the message."
-          - "She on autopilot, typed the message."
-          - "She without thinking, typed the message."
+          - "She absently typed the message."
+          - "She blankly typed the message."
       - input: "He robotically opened the door."
         valid_outputs:
           - "He dully opened the door."
-          - "He on autopilot, opened the door."
-          - "He without thinking, opened the door."
+          - "He absently opened the door."
+          - "He blankly opened the door."
     negative_cases:
       - "The machine operated mechanically."
       - "It was a mechanical failure."
+    notes: "All replacements are single adverbs to match the modifier slot"
 
   # ============================================================
   # Detect-Only Weak Signals
