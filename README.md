@@ -4,6 +4,8 @@ A pattern-based linter that detects overused expressions in Chinese and English 
 
 **Live demo**: Import a `.txt`, `.md`, or `.docx` file and start reviewing.
 
+![ProLint screenshot](screenshot/01.png)
+
 ## The Problem
 
 LLM-assisted writing and years of genre reading produce a shared pool of cliche patterns: "raised an eyebrow," "a sinking feeling in the pit of her stomach," "嘴角微微上扬," "瞳孔猛地一缩." These phrases aren't wrong — they're just worn out. Readers skim past them. Characters blur together.
