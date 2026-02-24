@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>八股替换器实验</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, 'PingFang SC', sans-serif; background: #1a1a2e; color: #d4d4d4; padding: 20px; }
+h1 { color: #e5c07b; font-size: 18px; margin-bottom: 16px; }
+.container { max-width: 1100px; margin: 0 auto; }
+.columns { display: flex; gap: 20px; }
+.col { flex: 1; }
+.panel { background: #16213e; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+.panel-title { font-size: 13px; color: #61afef; margin-bottom: 8px; font-weight: 600; }
+
+textarea { width: 100%; height: 300px; background: #0f3460; color: #d4d4d4; border: 1px solid #333; border-radius: 6px; padding: 12px; font-size: 13px; line-height: 1.8; resize: vertical; font-family: inherit; }
+
+.output { font-size: 13px; line-height: 1.8; white-space: pre-wrap; min-height: 300px; }
+.replaced { background: #1a3a2e; color: #98c379; border-bottom: 1px dashed #98c379; border-radius: 2px; padding: 0 2px; }
+.erased { background: #5c1a1a; color: #e06c75; text-decoration: line-through; opacity: 0.6; border-radius: 2px; padding: 0 2px; }
+.kept { color: #d4d4d4; }
+
+.pattern-list { max-height: 260px; overflow-y: auto; }
+.pattern-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-size: 12px; border-bottom: 1px solid #1a1a2e; }
+.pattern-item input[type="checkbox"] { flex-shrink: 0; }
+.pattern-cat { color: #c678dd; font-size: 11px; min-width: 80px; }
+.pattern-regex { color: #98c379; font-family: monospace; font-size: 11px; word-break: break-all; }
+.pattern-reps { color: #808080; font-size: 11px; margin-left: auto; white-space: nowrap; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
+
+.stats { display: flex; gap: 16px; margin: 12px 0; font-size: 12px; flex-wrap: wrap; }
+.stat { background: #0f3460; padding: 6px 12px; border-radius: 4px; }
+.stat-num { color: #e5c07b; font-weight: 600; }
+
+button { background: #61afef; color: #1a1a2e; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600; }
+button:hover { background: #7bc4ff; }
+.btn-secondary { background: #3e4451; color: #d4d4d4; }
+.btn-secondary:hover { background: #4e5563; }
+.btn-row { display: flex; gap: 8px; margin: 8px 0; flex-wrap: wrap; }
+
+.mode-toggle { display: flex; gap: 0; margin-bottom: 8px; }
+.mode-toggle button { border-radius: 0; font-size: 12px; padding: 6px 14px; }
+.mode-toggle button:first-child { border-radius: 4px 0 0 4px; }
+.mode-toggle button:last-child { border-radius: 0 4px 4px 0; }
+.mode-toggle .active { background: #e5c07b; color: #1a1a2e; }
+.mode-toggle .inactive { background: #3e4451; color: #808080; }
+
+.add-row { display: flex; gap: 6px; margin-top: 8px; }
+.add-row input { flex: 1; background: #0f3460; color: #d4d4d4; border: 1px solid #333; border-radius: 4px; padding: 4px 8px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>八股替换器实验 / Cliche Replacer Preview</h1>
+
+<div class="columns">
+<div class="col">
+    <div class="panel">
+        <div class="panel-title">Sample Text (edit or paste LLM output)</div>
+        <textarea id="inputText"></textarea>
+        <div class="btn-row">
+            <button onclick="runReplacer()">Apply</button>
+            <button class="btn-secondary" onclick="loadSample(0)">Sample 1</button>
+            <button class="btn-secondary" onclick="loadSample(1)">Sample 2</button>
+            <button class="btn-secondary" onclick="loadSample(2)">Sample 3</button>
+            <button class="btn-secondary" onclick="loadSample(3)">Edge Cases</button>
+            <button class="btn-secondary" onclick="runReplacer()">Re-roll</button>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">Cliche Patterns (toggle on/off) — replacements swap only the matched portion</div>
+        <div id="patternList" class="pattern-list"></div>
+        <div class="add-row">
+            <input id="addRegex" placeholder="New regex...">
+            <input id="addCat" placeholder="Category" style="max-width:100px">
+            <button onclick="addPattern()">+</button>
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="panel">
+        <div class="panel-title">Result</div>
+        <div class="mode-toggle">
+            <button id="modeReplace" class="active" onclick="setMode('replace')">Replace Mode</button>
+            <button id="modeErase" class="inactive" onclick="setMode('erase')">Erase Mode</button>
+        </div>
+        <div style="font-size:11px;color:#808080;margin-bottom:6px">
+            <span class="replaced">Green</span> = sub-match replaced with synonym &nbsp;|&nbsp;
+            <span class="erased">Red strikethrough</span> = erased (erase mode)
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="output" id="outputMarked"></div>
+    </div>
+    <div class="panel">
+        <div class="panel-title">Clean Output (final result)</div>
+        <div class="output" id="outputClean"></div>
+    </div>
+</div>
+</div>
+</div>
+
+<script>
+// ============================================================
+// Cliche patterns — replacements are used in clause.replace(regex, pick)
+// Only the regex-matched portion gets swapped; surrounding text stays.
+// ============================================================
+var patterns = [
+    // -- Thinking gestures --
+    // These match the FULL cliche phrase, so replacement replaces the entire match
+    { regex: "[右左]?手的?[食中无]?指.*?(?:敲|叩|弹|点).*?(?:桌|台|案|面)",
+      cat: "thinking_gesture",
+      replacements: ["指尖在桌沿画了个圈", "手掌按住了桌面", "五指在桌上收拢又松开"] },
+
+    { regex: "(?:修长的)?手指.*?(?:摩挲|把玩|转动|抚摸).*?(?:杯|盏|茶碗|酒杯|棋子|玉佩)",
+      cat: "thinking_gesture",
+      replacements: ["把杯子往前推了推", "将杯子转了个方向", "端起杯又放下了"] },
+
+    { regex: "双手(?:交叉|抱|环).*?(?:胸前|胸口)",
+      cat: "generic_posture",
+      replacements: ["两手撑在桌上", "一手搭在椅背上", "两手插进袖子里"] },
+
+    // -- Facial expressions --
+    // These match the whole expression, replacement is the whole alternative
+    { regex: "嘴角.*?(?:微微|轻轻|缓缓)?(?:上扬|勾起|翘起|扬起|弯起)",
+      cat: "generic_smile",
+      replacements: ["嘴唇弯了弯", "脸上有了点笑意", "笑了一下"] },
+
+    { regex: "眉[头梢].*?(?:微微|轻轻|不易察觉地)?(?:蹙|皱|挑|一挑|上挑)",
+      cat: "generic_brow",
+      replacements: ["脸色沉了沉", "表情收紧了", "额头现出几道纹路"] },
+
+    { regex: "眼[中底里神].*?闪过一[丝抹道缕]",
+      cat: "emotion_flash",
+      replacements: ["眼神变了变", "目光停顿了一瞬", "视线微微移开又回来"] },
+
+    { regex: "目光.*?(?:微微|不易察觉地)?(?:闪烁|闪动|一闪)",
+      cat: "emotion_flash",
+      replacements: ["眨了眨眼", "视线飘了一下", "看了看别处"] },
+
+    { regex: "瞳孔.*?(?:微微|猛然)?(?:收缩|一缩|紧缩|放大)",
+      cat: "pupil_cliche",
+      replacements: ["眼睛猛地睁大", "愣了一瞬", "整个人僵了一下"] },
+
+    // -- Emotional descriptions --
+    { regex: "(?:心中|心里|内心).*?(?:涌起|升起|泛起|浮起).*?(?:一股|一阵|一丝)",
+      cat: "inner_feeling",
+      replacements: ["说不上来是什么感觉", "胸口闷了一下", "有什么堵在喉咙里"] },
+
+    // KEY: adverb-only patterns — these match JUST the adverb, so context is preserved
+    // "他不自觉地后退" -> regex matches "不自觉地" -> replace -> "他本能地后退"
+    { regex: "(?:不自觉|不由自主|下意识)地",
+      cat: "auto_action",
+      replacements: ["本能地", "条件反射般地", "身体先一步地"] },
+
+    { regex: "仿佛.*?(?:在|要).*?(?:诉说|倾诉|传达)",
+      cat: "poetic_filler",
+      replacements: ["沉静地望着远处", "像是在想什么很远的事", "眼神变得悠远"] },
+
+    { regex: "一种难以言喻的",
+      cat: "vague_emotion",
+      replacements: ["说不清的", "从没体验过的", "陌生的"] },
+
+    // -- Formulaic sentence structures (no good sub-match replacement, erase-only) --
+    { regex: "不是[^，。]+，而是[^。]+",
+      cat: "not_X_but_Y",
+      replacements: [] },
+
+    { regex: "与其说是[^，。]+，不如说是[^。]+",
+      cat: "rather_than",
+      replacements: [] },
+
+    { regex: "(?:这个|那个|这种|那种)(?:看似|表面上)[^，。]+(?:实则|实际上|背后)",
+      cat: "surface_vs_reality",
+      replacements: [] },
+
+    // -- Atmosphere --
+    { regex: "空气.*?(?:仿佛|似乎|好像).*?(?:凝固|凝结|静止|冻结)",
+      cat: "frozen_air",
+      replacements: ["周围安静下来", "两人之间隔着一段沉默", "谁都没有先开口"] },
+
+    { regex: "沉默.*?(?:蔓延|弥漫|笼罩|在.*?之间)",
+      cat: "spreading_silence",
+      replacements: ["两人都没有说话", "安静持续了很久", "谁也没打破这段空白"] },
+
+    { regex: "气氛.*?(?:变得|陡然|瞬间).*?(?:微妙|紧张|凝重)",
+      cat: "atmosphere_shift",
+      replacements: ["场面一时有些尴尬", "对话变得小心起来", "接下来的话变得不好说了"] },
+
+    // -- Physical cliches --
+    { regex: "(?:一股|一阵).*?(?:寒意|凉意).*?(?:从|沿).*?(?:脊背|脊椎|后背|尾椎).*?(?:升起|蔓延|窜上)",
+      cat: "spine_chill",
+      replacements: ["后背的汗毛竖了起来", "身上起了一层鸡皮疙瘩", "冷汗渗了出来"] },
+
+    { regex: "(?:喉结|喉头).*?(?:上下|微微).*?(?:滚动|滑动|一动)",
+      cat: "throat_bob",
+      replacements: ["咽了口唾沫", "喉咙发紧", "嗓子像是被什么堵住了"] },
+
+    { regex: "(?:攥紧|握紧|捏紧)了(?:拳头|拳|双拳)",
+      cat: "fist_clench",
+      replacements: ["指甲掐进了掌心", "手指收紧了", "手背上青筋凸起"] },
+
+    // -- English --
+    { regex: "raised an eyebrow",
+      cat: "en_brow",
+      replacements: ["tilted his head slightly", "gave a skeptical look", "paused for a beat"] },
+
+    { regex: "a? ?(?:smirk|smile) (?:tugged|played|danced) at (?:the corner of )?(?:his|her|their) lips",
+      cat: "en_smile",
+      replacements: ["almost smiled", "fought back a grin", "allowed a thin smile"] },
+
+    { regex: "let out a breath (?:he|she|they) didn'?t know (?:he|she|they) (?:had been |were? )?holding",
+      cat: "en_breath",
+      replacements: ["exhaled slowly", "unclenched her jaw", "relaxed by a fraction"] },
+
+    { regex: "something (?:shifted|changed|flickered) (?:in|behind) (?:his|her|their) eyes",
+      cat: "en_eye_shift",
+      replacements: ["her expression changed", "a new sharpness entered her gaze", "she blinked, recalibrating"] },
+
+    { regex: "(?:the |a )?(?:heavy |crushing )?(?:weight|burden) (?:of .+? )?settled (?:on|over|across) (?:his|her|their) shoulders",
+      cat: "en_weight",
+      replacements: ["he felt suddenly tired", "exhaustion caught up with him", "his posture sagged"] },
+
+    { regex: "fingers? (?:drummed|tapped|rapped) (?:on |against )(?:the )?(?:table|desk|surface)",
+      cat: "en_drumming",
+      replacements: ["traced a line on the table", "pressed flat against the desk", "went still on the surface"] },
+
+    { regex: "couldn'?t help but",
+      cat: "en_cant_help",
+      replacements: ["found herself", "ended up", "had to"] },
+];
+
+patterns.forEach(function(p) { p.enabled = true; });
+
+// ============================================================
+// Sample texts
+// ============================================================
+var samples = [
+"*\u5B59\u609F\u7A7A\u7684\u76EE\u5149\u5FAE\u5FAE\u95EA\u70C1\uFF0C\u53F3\u624B\u7684\u98DF\u6307\u5728\u684C\u9762\u4E0A\u8F7B\u8F7B\u6572\u4E86\u4E09\u4E0B\u2014\u2014\u8FD9\u4E2A\u4E60\u60EF\u6027\u7684\u52A8\u4F5C\u6697\u793A\u7740\u4ED6\u6B63\u5728\u601D\u8003\uFF0C\u540C\u65F6\u4E5F\u53EF\u80FD\u662F\u5728\u5411\u95E8\u5916\u7684\u4F8D\u536B\u793A\u610F\u3002*\n\n\"\u4E0D\u8FC7...\u6211\u5012\u60F3\u542C\u542C\uFF0C\u4F60\u8FD9\u6837\u505A\u7684\u76EE\u7684\u662F\u4EC0\u4E48\u3002\"\n\n*\u4ED6\u5634\u89D2\u5FAE\u5FAE\u4E0A\u626C\uFF0C\u9732\u51FA\u4E00\u62B9\u610F\u5473\u6DF1\u957F\u7684\u7B11\u5BB9\u3002\u773C\u4E2D\u95EA\u8FC7\u4E00\u4E1D\u590D\u6742\u7684\u60C5\u7EEA\uFF0C\u4E0D\u662F\u6124\u6012\uFF0C\u800C\u662F\u67D0\u79CD\u96BE\u4EE5\u8A00\u55BB\u7684\u5BA1\u89C6\u3002\u7A7A\u6C14\u4EFF\u4F5B\u51DD\u56FA\u4E86\u4E00\u77AC\u3002*\n\n\"\u8BF4\u5427\u3002\"",
+
+"*\u94C1\u6247\u516C\u4E3B\u7F13\u7F13\u653E\u4E0B\u624B\u4E2D\u7684\u8299\u8549\u6247\uFF0C\u4FEE\u957F\u7684\u624B\u6307\u6469\u6332\u7740\u6247\u67C4\u3002\u5979\u7684\u77B3\u5B54\u5FAE\u5FAE\u6536\u7F29\uFF0C\u4E00\u80A1\u5BD2\u610F\u4ECE\u810A\u80CC\u5347\u8D77\u3002*\n\n\"\u4F60\u4EE5\u4E3A\u51ED\u4F60\u4E00\u4E2A\u7334\u5B50\uFF0C\u5C31\u80FD\u4ECE\u6211\u8FD9\u91CC\u501F\u5230\u6247\u5B50\uFF1F\"\n\n*\u5979\u4E0D\u81EA\u89C9\u5730\u6525\u7D27\u4E86\u62F3\u5934\uFF0C\u5FC3\u4E2D\u6D8C\u8D77\u4E00\u80A1\u83AB\u540D\u7684\u6012\u610F\u3002\u4E0E\u5176\u8BF4\u662F\u5BF9\u5B59\u609F\u7A7A\u7684\u6124\u6012\uFF0C\u4E0D\u5982\u8BF4\u662F\u5BF9\u547D\u8FD0\u7684\u4E0D\u7518\u3002\u6C89\u9ED8\u5728\u4E24\u4EBA\u4E4B\u95F4\u8513\u5EF6\u5F00\u6765\uFF0C\u6C14\u6C1B\u53D8\u5F97\u5FAE\u5999\u8D77\u6765\u3002*\n\n*\u5979\u7709\u5934\u5FAE\u5FAE\u8599\u8D77\uFF0C\u76EE\u5149\u4E2D\u4EFF\u4F5B\u5728\u8BC9\u8BF4\u7740\u4EC0\u4E48\u6DF1\u6C89\u7684\u5F80\u4E8B\u3002* \"\u8D70\u5427\uFF0C\u8FD9\u91CC\u6CA1\u6709\u4F60\u8981\u7684\u4E1C\u897F\u3002\"",
+
+"*\u725B\u9B54\u738B\u5C06\u9152\u7897\u91CD\u91CD\u5730\u653E\u5728\u684C\u4E0A\uFF0C\u53CC\u624B\u4EA4\u53C9\u5728\u80F8\u524D\u3002\u4ED6\u7684\u773C\u4E2D\u95EA\u8FC7\u4E00\u4E1D\u4E0D\u60A6\uFF0C\u5589\u7ED3\u4E0A\u4E0B\u6EDA\u52A8\u4E86\u4E00\u4E0B\u3002*\n\n\"\u4F60\u8BF4\u4EC0\u4E48\uFF1F\"\n\n*\u4ED6\u7684\u58F0\u97F3\u4F4E\u6C89\u800C\u6709\u529B\uFF0C\u8FD9\u4E2A\u770B\u4F3C\u5E73\u9759\u7684\u53CD\u95EE\u5B9E\u5219\u6697\u85CF\u6012\u610F\u3002\u4E00\u79CD\u96BE\u4EE5\u8A00\u55BB\u7684\u538B\u8FEB\u611F\u4ECE\u4ED6\u5E9E\u5927\u7684\u8EAF\u8EF8\u4E2D\u6563\u53D1\u51FA\u6765\u3002*\n\n*\u5468\u56F4\u7684\u5C0F\u5996\u4EEC\u4E0D\u7531\u81EA\u4E3B\u5730\u540E\u9000\u4E86\u4E00\u6B65\u3002\u7A7A\u6C14\u4EFF\u4F5B\u51DD\u7ED3\u4E86\u4E00\u822C\uFF0C\u6240\u6709\u4EBA\u90FD\u5C4F\u4F4F\u4E86\u547C\u5438\u3002\u725B\u9B54\u738B\u5634\u89D2\u52FE\u8D77\u4E00\u62B9\u51B7\u7B11\uFF0C\u76EE\u5149\u5FAE\u5FAE\u95EA\u70C1\u3002*\n\n\"\u518D\u8BF4\u4E00\u904D\u3002\"",
+
+// Sample 4: Edge cases -- subject preservation test
+"*\u5979\u7709\u5934\u5FAE\u5FAE\u8599\u8D77\uFF0C\u76EE\u5149\u4E2D\u4EFF\u4F5B\u5728\u8BC9\u8BF4\u7740\u4EC0\u4E48\u6DF1\u6C89\u7684\u5F80\u4E8B\u3002*\n\n*\u5979\u76F4\u52FE\u52FE\u7684\u770B\u7740\u5BF9\u65B9\uFF0C\u63E1\u7740\u7B14\u7684\u6307\u8282\u5DF2\u7ECF\u53D1\u767D\u3002*\n\n*\u4ED6\u4E0D\u81EA\u89C9\u5730\u540E\u9000\u4E86\u4E00\u6B65\uFF0C\u7136\u540E\u62AC\u8D77\u5934\u770B\u5411\u8FDC\u65B9\u7684\u5C71\u5CB3\uFF0C\u773C\u4E2D\u95EA\u8FC7\u4E00\u4E1D\u575A\u5B9A\u3002*\n\n*\u7A7A\u6C14\u4EFF\u4F5B\u51DD\u56FA\u4E86\u3002*\n\n\"\u4F60\u5230\u5E95\u8981\u600E\u6837\uFF1F\""
+];
+
+// ============================================================
+// State
+// ============================================================
+var currentMode = 'replace';
+
+// ============================================================
+// Core logic
+// ============================================================
+function renderPatternList() {
+    var el = document.getElementById('patternList');
+    var html = '';
+    patterns.forEach(function(p, i) {
+        var repCount = (p.replacements && p.replacements.length) ? p.replacements.length : 0;
+        var repLabel = repCount > 0
+            ? '<span style="color:#98c379;font-size:10px;margin-left:4px">[' + repCount + ']</span>'
+            : '<span style="color:#e06c75;font-size:10px;margin-left:4px">[erase]</span>';
+        var repPreview = repCount > 0 ? p.replacements.slice(0, 2).join(' | ') : 'no replacement';
+        html += '<div class="pattern-item">'
+            + '<input type="checkbox" ' + (p.enabled ? 'checked' : '') + ' onchange="togglePattern(' + i + ')">'
+            + '<span class="pattern-cat">' + esc(p.cat) + repLabel + '</span>'
+            + '<span class="pattern-regex">' + esc(p.regex) + '</span>'
+            + '<span class="pattern-reps" title="' + esc(p.replacements.join(' | ')) + '">' + esc(repPreview) + '</span>'
+            + '</div>';
+    });
+    el.innerHTML = html;
+}
+
+function togglePattern(i) {
+    patterns[i].enabled = !patterns[i].enabled;
+    runReplacer();
+}
+
+function addPattern() {
+    var regex = document.getElementById('addRegex').value.trim();
+    var cat = document.getElementById('addCat').value.trim() || 'custom';
+    if (!regex) return;
+    patterns.push({ regex: regex, cat: cat, enabled: true, replacements: [] });
+    document.getElementById('addRegex').value = '';
+    document.getElementById('addCat').value = '';
+    renderPatternList();
+    runReplacer();
+}
+
+function loadSample(idx) {
+    document.getElementById('inputText').value = samples[idx] || '';
+    runReplacer();
+}
+
+function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('modeReplace').className = mode === 'replace' ? 'active' : 'inactive';
+    document.getElementById('modeErase').className = mode === 'erase' ? 'active' : 'inactive';
+    runReplacer();
+}
+
+function pickRandom(arr) {
+    if (!arr || arr.length === 0) return null;
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function runReplacer() {
+    var text = document.getElementById('inputText').value;
+    if (!text) {
+        document.getElementById('outputMarked').innerHTML = '';
+        document.getElementById('outputClean').textContent = '';
+        document.getElementById('stats').innerHTML = '';
+        return;
+    }
+
+    var activePatterns = patterns.filter(function(p) { return p.enabled; });
+
+    // Build regex objects (non-global for test, then use replace)
+    var compiled = activePatterns.map(function(p) {
+        try { return { re: new RegExp(p.regex), pat: p }; }
+        catch(e) { return null; }
+    }).filter(Boolean);
+
+    var paragraphs = text.split('\n');
+    var markedHTML = '';
+    var cleanParts = [];
+    var totalClauses = 0;
+    var hitCount = 0;
+    var matchedCats = {};
+
+    paragraphs.forEach(function(para, pi) {
+        if (pi > 0) { markedHTML += '\n'; cleanParts.push('\n'); }
+        if (!para.trim()) return;
+
+        // Split by clause boundaries (keep delimiter attached)
+        var clauses = para.split(/(?<=[，。！？；、\!\?\;\,])/);
+        var paraClean = [];
+
+        clauses.forEach(function(clause) {
+            if (!clause.trim()) { markedHTML += esc(clause); paraClean.push(clause); return; }
+            totalClauses++;
+
+            // Find first matching pattern
+            var hit = null;
+            for (var r = 0; r < compiled.length; r++) {
+                if (compiled[r].re.test(clause)) {
+                    hit = compiled[r];
+                    break;
+                }
+            }
+
+            if (!hit) {
+                // No cliche found -- keep as-is
+                markedHTML += '<span class="kept">' + esc(clause) + '</span>';
+                paraClean.push(clause);
+                return;
+            }
+
+            hitCount++;
+            var cat = hit.pat.cat;
+            matchedCats[cat] = (matchedCats[cat] || 0) + 1;
+
+            var hasReplacements = hit.pat.replacements && hit.pat.replacements.length > 0;
+
+            if (currentMode === 'replace' && hasReplacements) {
+                var replacement = pickRandom(hit.pat.replacements);
+
+                // Sub-match replacement: only the matched portion changes
+                // clause.replace(regex, replacement) preserves everything around the match
+                var newClause = clause.replace(hit.re, replacement);
+
+                // Build marked HTML showing what changed
+                // Find the match boundaries to highlight
+                var match = clause.match(hit.re);
+                if (match) {
+                    var idx = match.index;
+                    var matchedText = match[0];
+                    var before = clause.substring(0, idx);
+                    var after = clause.substring(idx + matchedText.length);
+
+                    markedHTML += '<span class="kept">' + esc(before) + '</span>'
+                        + '<span class="replaced" title="' + esc(matchedText) + '">' + esc(replacement) + '</span>'
+                        + '<span class="kept">' + esc(after) + '</span>';
+                } else {
+                    markedHTML += '<span class="replaced">' + esc(newClause) + '</span>';
+                }
+
+                paraClean.push(newClause);
+            } else {
+                // Erase mode or no replacements -- strikethrough
+                markedHTML += '<span class="erased">' + esc(clause) + '</span>';
+                // Don't add to paraClean
+            }
+        });
+
+        // Punctuation cleanup on surviving text
+        var joined = paraClean.join('').trim();
+        if (joined) {
+            joined = joined.replace(/[，、]$/, '\u3002');
+            joined = joined.replace(/；$/, '\u3002');
+            joined = joined.replace(/,\s*$/, '.');
+            joined = joined.replace(/[，、](?=[。！？])/g, '');
+            cleanParts.push(joined);
+        }
+    });
+
+    document.getElementById('outputMarked').innerHTML = markedHTML;
+    document.getElementById('outputClean').textContent = cleanParts.join('\n');
+
+    var catList = Object.keys(matchedCats).map(function(k) { return k + '(' + matchedCats[k] + ')'; }).join(', ');
+    var modeLabel = currentMode === 'replace' ? 'Replaced' : 'Erased';
+    document.getElementById('stats').innerHTML =
+        '<div class="stat">Clauses: <span class="stat-num">' + totalClauses + '</span></div>' +
+        '<div class="stat">' + modeLabel + ': <span class="stat-num">' + hitCount + '</span></div>' +
+        '<div class="stat">Rate: <span class="stat-num">' + (totalClauses ? Math.round(hitCount / totalClauses * 100) : 0) + '%</span></div>' +
+        (catList ? '<div class="stat">Hit: ' + catList + '</div>' : '');
+}
+
+function esc(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+}
+
+renderPatternList();
+loadSample(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,698 @@
+version: "0.1.0"
+language: "en"
+
+entries:
+  # ============================================================
+  # Facial Expressions
+  # ============================================================
+
+  - id: "en_raised_eyebrow"
+    category: "generic_brow"
+    type: "full"
+    severity: "replace"
+    detect: "raised an eyebrow"
+    replacements:
+      - "looked skeptical"
+      - "paused"
+      - "gave a questioning look"
+      - "tilted the head slightly"
+      - "waited for an explanation"
+    test_cases:
+      - input: "He raised an eyebrow."
+        valid_outputs:
+          - "He looked skeptical."
+          - "He paused."
+          - "He gave a questioning look."
+          - "He tilted the head slightly."
+          - "He waited for an explanation."
+      - input: "She raised an eyebrow at the suggestion."
+        valid_outputs:
+          - "She looked skeptical at the suggestion."
+          - "She paused at the suggestion."
+          - "She gave a questioning look at the suggestion."
+          - "She tilted the head slightly at the suggestion."
+          - "She waited for an explanation at the suggestion."
+    negative_cases:
+      - "He raised his hand."
+      - "She raised the bar."
+
+  - id: "en_corner_smile"
+    category: "generic_smile"
+    type: "full"
+    severity: "replace"
+    detect: "(?:[Aa]n? )?(?:smirk|smile) (?:tugged|played|danced) at (?:the corner of )?(?:his|her|their) lips"
+    replacements:
+      - "almost smiled"
+      - "fought back a grin"
+      - "allowed a thin smile"
+      - "the mouth softened"
+      - "amusement crept in"
+    test_cases:
+      - input: "A smile tugged at the corner of her lips."
+        valid_outputs:
+          - "almost smiled."
+          - "fought back a grin."
+          - "allowed a thin smile."
+          - "the mouth softened."
+          - "amusement crept in."
+      - input: "a smirk played at his lips"
+        valid_outputs:
+          - "almost smiled"
+          - "fought back a grin"
+          - "allowed a thin smile"
+          - "the mouth softened"
+          - "amusement crept in"
+    negative_cases:
+      - "She smiled at him warmly."
+      - "His lips were dry."
+
+  # ============================================================
+  # Breath / Physical
+  # ============================================================
+
+  - id: "en_held_breath"
+    category: "inner_feeling"
+    type: "full"
+    severity: "replace"
+    detect: "let out a breath (?:he|she|they) didn'?t know (?:he|she|they) (?:had been |was |were? )?holding"
+    replacements:
+      - "exhaled slowly"
+      - "let the tension go"
+      - "relaxed by a fraction"
+      - "felt the tightness leave"
+      - "unclenched something inside"
+    test_cases:
+      - input: "She let out a breath she didn't know she was holding."
+        valid_outputs:
+          - "She exhaled slowly."
+          - "She let the tension go."
+          - "She relaxed by a fraction."
+          - "She felt the tightness leave."
+          - "She unclenched something inside."
+      - input: "He let out a breath he didn't know he had been holding."
+        valid_outputs:
+          - "He exhaled slowly."
+          - "He let the tension go."
+          - "He relaxed by a fraction."
+          - "He felt the tightness leave."
+          - "He unclenched something inside."
+    negative_cases:
+      - "She let out a sigh."
+      - "He was holding his breath."
+
+  # ============================================================
+  # Eye / Emotion
+  # ============================================================
+
+  - id: "en_eye_shift"
+    category: "emotion_flash"
+    type: "full"
+    severity: "replace"
+    detect: "[Ss]omething (?:shifted|changed|flickered) (?:in|behind) (?:his|her|their) eyes"
+    replacements:
+      - "the expression shifted"
+      - "a new awareness crossed that face"
+      - "a change registered"
+      - "attention sharpened"
+      - "the look became guarded"
+    test_cases:
+      - input: "Something shifted in her eyes."
+        valid_outputs:
+          - "the expression shifted."
+          - "a new awareness crossed that face."
+          - "a change registered."
+          - "attention sharpened."
+          - "the look became guarded."
+      - input: "something changed behind his eyes"
+        valid_outputs:
+          - "the expression shifted"
+          - "a new awareness crossed that face"
+          - "a change registered"
+          - "attention sharpened"
+          - "the look became guarded"
+    negative_cases:
+      - "His eyes were blue."
+      - "She shifted in her seat."
+
+  - id: "en_weight_shoulders"
+    category: "inner_feeling"
+    type: "full"
+    severity: "replace"
+    detect: "(?:[Tt]he |[Aa] )?(?:heavy |crushing )?(?:weight|burden) (?:of .+? )?settled (?:on|over|across) (?:his|her|their) shoulders"
+    replacements:
+      - "a sudden tiredness hit"
+      - "exhaustion settled in"
+      - "energy drained away"
+    test_cases:
+      - input: "The weight settled on his shoulders."
+        valid_outputs:
+          - "a sudden tiredness hit."
+          - "exhaustion settled in."
+          - "energy drained away."
+      - input: "a heavy burden of responsibility settled across her shoulders"
+        valid_outputs:
+          - "a sudden tiredness hit"
+          - "exhaustion settled in"
+          - "energy drained away"
+    negative_cases:
+      - "He put his bag on his shoulders."
+      - "The weight of the box was too much."
+
+  # ============================================================
+  # Thinking Gestures
+  # ============================================================
+
+  - id: "en_finger_drumming"
+    category: "thinking_gesture"
+    type: "full"
+    severity: "replace"
+    detect: "fingers? (?:drummed|tapped|rapped) (?:on |against )(?:the )?(?:table|desk|surface)"
+    replacements:
+      - "fingers went still on the table"
+      - "hand pressed flat against the desk"
+      - "fingers spread out on the surface"
+    test_cases:
+      - input: "His fingers drummed on the table."
+        valid_outputs:
+          - "His fingers went still on the table."
+          - "His hand pressed flat against the desk."
+          - "His fingers spread out on the surface."
+      - input: "Her finger tapped against the desk."
+        valid_outputs:
+          - "Her fingers went still on the table."
+          - "Her hand pressed flat against the desk."
+          - "Her fingers spread out on the surface."
+    negative_cases:
+      - "He put his fingers on the table."
+      - "She tapped him on the shoulder."
+
+  # ============================================================
+  # Formulaic Expressions
+  # ============================================================
+
+  - id: "en_couldnt_help"
+    category: "auto_action"
+    type: "prefix"
+    severity: "replace"
+    suffix_type: "action_word"
+    detect: "couldn'?t help but "
+    replacements:
+      - "had to "
+      - "wanted to "
+      - "began to "
+    test_cases:
+      - input: "She couldn't help but smile."
+        suffix: "smile."
+        valid_outputs:
+          - "had to smile."
+          - "wanted to smile."
+          - "began to smile."
+      - input: "He couldn't help but stare."
+        suffix: "stare."
+        valid_outputs:
+          - "had to stare."
+          - "wanted to stare."
+          - "began to stare."
+    negative_cases:
+      - "She couldn't help him."
+      - "He helped but failed."
+    notes: "Prefix type: replacement must accept bare infinitive verb as suffix"
+
+  # ============================================================
+  # Metaphor Cliches
+  # ============================================================
+
+  - id: "en_stone_lake"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Ll]ike a (?:stone|pebble|rock) (?:dropped|thrown|tossed) (?:in(?:to)?|on) (?:a )?(?:calm |still )?(?:lake|pond|pool|water)"
+    replacements:
+      - "hit without warning"
+      - "landed like a slap"
+      - "struck with sudden force"
+    test_cases:
+      - input: "like a stone dropped in a calm lake"
+        valid_outputs:
+          - "hit without warning"
+          - "landed like a slap"
+          - "struck with sudden force"
+      - input: "Like a pebble thrown into a still pond"
+        valid_outputs:
+          - "hit without warning"
+          - "landed like a slap"
+          - "struck with sudden force"
+    negative_cases:
+      - "He threw a stone into the lake."
+      - "The pond was calm and still."
+
+  - id: "en_vines_despair"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:[Vv]ines|[Tt]endrils|[Rr]oots) of (?:despair|fear|dread|anxiety) (?:wrapped|curled|coiled|crept|spread) (?:around|through|over) (?:him|her|them|\\w+)"
+    replacements:
+      - "the dread thickened"
+      - "fear pressed in from every side"
+      - "panic tightened its hold"
+    test_cases:
+      - input: "Vines of despair wrapped around her"
+        valid_outputs:
+          - "the dread thickened"
+          - "fear pressed in from every side"
+          - "panic tightened its hold"
+      - input: "tendrils of fear crept through him"
+        valid_outputs:
+          - "the dread thickened"
+          - "fear pressed in from every side"
+          - "panic tightened its hold"
+    negative_cases:
+      - "Vines crept over the garden wall."
+      - "The roots of the old tree spread wide."
+
+  - id: "en_dagger_blow"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Ll]ike a (?:physical blow|punch to the gut|dagger to the (?:chest|heart)|slap (?:in|across) the face)"
+    replacements:
+      - "hard enough to stagger"
+      - "with a force that left no room to think"
+      - "sudden and total"
+    test_cases:
+      - input: "like a physical blow"
+        valid_outputs:
+          - "hard enough to stagger"
+          - "with a force that left no room to think"
+          - "sudden and total"
+      - input: "like a dagger to the chest"
+        valid_outputs:
+          - "hard enough to stagger"
+          - "with a force that left no room to think"
+          - "sudden and total"
+    negative_cases:
+      - "He threw a punch."
+      - "She slapped the table."
+
+  - id: "en_drowning_lifeline"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Ll]ike (?:drowning|sinking) and (?:grasping|reaching|clutching) for (?:a )?(?:lifeline|driftwood|something solid)"
+    replacements:
+      - "desperate and losing ground"
+      - "scrambling for anything to hold onto"
+      - "past the point of steady thinking"
+    test_cases:
+      - input: "like drowning and grasping for a lifeline"
+        valid_outputs:
+          - "desperate and losing ground"
+          - "scrambling for anything to hold onto"
+          - "past the point of steady thinking"
+      - input: "Like sinking and clutching for driftwood"
+        valid_outputs:
+          - "desperate and losing ground"
+          - "scrambling for anything to hold onto"
+          - "past the point of steady thinking"
+    negative_cases:
+      - "She was drowning in paperwork."
+      - "He grasped the rope tightly."
+
+  # ============================================================
+  # Physical / Body Cliches
+  # ============================================================
+
+  - id: "en_vision_blurred"
+    category: "eye_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:[Vv]ision|[Ss]ight) (?:blurred|swam|wavered) with (?:unshed |un-shed )?tears"
+    replacements:
+      - "eyes stung"
+      - "had to blink hard"
+      - "jaw tightened against the sting"
+    test_cases:
+      - input: "Vision blurred with unshed tears"
+        valid_outputs:
+          - "eyes stung"
+          - "had to blink hard"
+          - "jaw tightened against the sting"
+      - input: "sight swam with tears"
+        valid_outputs:
+          - "eyes stung"
+          - "had to blink hard"
+          - "jaw tightened against the sting"
+    negative_cases:
+      - "His vision blurred from the bright light."
+      - "Tears streamed down her face."
+
+  - id: "en_throat_sound"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Aa] (?:sound|sob|sigh|groan|whimper) (?:tore|ripped|escaped|slipped) from (?:his|her|their) throat"
+    replacements:
+      - "a noise came out, low and unsteady"
+      - "something broke in the silence"
+      - "the sound that escaped was barely human"
+    test_cases:
+      - input: "A sob tore from her throat"
+        valid_outputs:
+          - "a noise came out, low and unsteady"
+          - "something broke in the silence"
+          - "the sound that escaped was barely human"
+      - input: "a sigh escaped from his throat"
+        valid_outputs:
+          - "a noise came out, low and unsteady"
+          - "something broke in the silence"
+          - "the sound that escaped was barely human"
+    negative_cases:
+      - "He cleared his throat."
+      - "A sigh filled the room."
+
+  - id: "en_wounded_animal"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:whimpered|cried|sounded|keened) like a (?:wounded|injured|dying|cornered) animal"
+    replacements:
+      - "made a sound that did not belong in a human mouth"
+      - "let out a noise too raw for words"
+      - "broke into something between a cry and a gasp"
+    test_cases:
+      - input: "whimpered like a wounded animal"
+        valid_outputs:
+          - "made a sound that did not belong in a human mouth"
+          - "let out a noise too raw for words"
+          - "broke into something between a cry and a gasp"
+      - input: "sounded like a cornered animal"
+        valid_outputs:
+          - "made a sound that did not belong in a human mouth"
+          - "let out a noise too raw for words"
+          - "broke into something between a cry and a gasp"
+    negative_cases:
+      - "The animal whimpered in pain."
+      - "She cried softly."
+
+  - id: "en_bit_lip_blood"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Bb]it (?:(?:his|her|their) )?lip(?:s)? (?:until|till|hard enough to) (?:(?:he|she|they) )?(?:tasted|drew|draw) (?:copper|blood|iron)"
+    replacements:
+      - "pressed lips together until they went white"
+      - "clenched teeth hard enough to ache"
+      - "held everything behind a locked jaw"
+    test_cases:
+      - input: "Bit her lip until she tasted copper"
+        valid_outputs:
+          - "pressed lips together until they went white"
+          - "clenched teeth hard enough to ache"
+          - "held everything behind a locked jaw"
+      - input: "bit his lip hard enough to draw blood"
+        valid_outputs:
+          - "pressed lips together until they went white"
+          - "clenched teeth hard enough to ache"
+          - "held everything behind a locked jaw"
+    negative_cases:
+      - "She bit into the apple."
+      - "His lip was bleeding."
+
+  - id: "en_sinking_stomach"
+    category: "inner_feeling"
+    type: "full"
+    severity: "replace"
+    detect: "[Aa] sinking (?:feeling|sensation) in the pit of (?:his|her|their) stomach"
+    replacements:
+      - "a cold lurch in the gut"
+      - "stomach dropping out"
+      - "something heavy settling behind the ribs"
+    test_cases:
+      - input: "A sinking feeling in the pit of her stomach"
+        valid_outputs:
+          - "a cold lurch in the gut"
+          - "stomach dropping out"
+          - "something heavy settling behind the ribs"
+      - input: "a sinking sensation in the pit of his stomach"
+        valid_outputs:
+          - "a cold lurch in the gut"
+          - "stomach dropping out"
+          - "something heavy settling behind the ribs"
+    negative_cases:
+      - "Her stomach growled."
+      - "He had a bad feeling about this."
+
+  # ============================================================
+  # Expression Cliches
+  # ============================================================
+
+  - id: "en_eyes_widened"
+    category: "expression_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:[Hh]is|[Hh]er|[Tt]heir) eyes widened (?:in|with) (?:surprise|shock|disbelief|horror|fear)"
+    replacements:
+      - "went very still"
+      - "the reaction was instant and visible"
+      - "froze for half a second"
+    test_cases:
+      - input: "Her eyes widened in surprise"
+        valid_outputs:
+          - "went very still"
+          - "the reaction was instant and visible"
+          - "froze for half a second"
+      - input: "His eyes widened with disbelief"
+        valid_outputs:
+          - "went very still"
+          - "the reaction was instant and visible"
+          - "froze for half a second"
+    negative_cases:
+      - "Her eyes were wide and blue."
+      - "He widened the gap."
+
+  - id: "en_sly_smirk"
+    category: "expression_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Aa] (?:sly|cunning|knowing|mischievous) (?:smirk|grin|smile) (?:played|spread|crept|appeared) (?:on|across|over) (?:his|her|their) (?:lips|face)"
+    replacements:
+      - "looked like someone holding a winning hand"
+      - "wore an expression that gave nothing away"
+      - "the amusement was barely hidden"
+    test_cases:
+      - input: "A sly smirk played on her lips"
+        valid_outputs:
+          - "looked like someone holding a winning hand"
+          - "wore an expression that gave nothing away"
+          - "the amusement was barely hidden"
+      - input: "a knowing grin spread across his face"
+        valid_outputs:
+          - "looked like someone holding a winning hand"
+          - "wore an expression that gave nothing away"
+          - "the amusement was barely hidden"
+    negative_cases:
+      - "She smiled warmly."
+      - "He grinned at the joke."
+
+  - id: "en_teasing_glint"
+    category: "expression_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Aa] (?:teasing|mocking|playful|wicked) (?:glint|gleam|spark|light) in (?:his|her|their) eyes"
+    replacements:
+      - "something sharp behind the casual look"
+      - "eyes that said more than the words did"
+      - "a look that dared a response"
+    test_cases:
+      - input: "A teasing glint in her eyes"
+        valid_outputs:
+          - "something sharp behind the casual look"
+          - "eyes that said more than the words did"
+          - "a look that dared a response"
+      - input: "a mocking gleam in his eyes"
+        valid_outputs:
+          - "something sharp behind the casual look"
+          - "eyes that said more than the words did"
+          - "a look that dared a response"
+    negative_cases:
+      - "Her eyes were bright."
+      - "A light shone in the distance."
+
+  # ============================================================
+  # Tone / Manner Cliches
+  # ============================================================
+
+  - id: "en_casual_weather"
+    category: "tone_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:[Ww]ith a tone|[Ii]n a (?:tone|voice)) as (?:casual|calm|flat) as (?:if )?(?:discussing|talking about|mentioning) the weather"
+    replacements:
+      - "flat and even"
+      - "without inflection"
+      - "steady enough to unsettle"
+    test_cases:
+      - input: "with a tone as casual as discussing the weather"
+        valid_outputs:
+          - "flat and even"
+          - "without inflection"
+          - "steady enough to unsettle"
+      - input: "In a voice as calm as if talking about the weather"
+        valid_outputs:
+          - "flat and even"
+          - "without inflection"
+          - "steady enough to unsettle"
+    negative_cases:
+      - "They discussed the weather."
+      - "Her tone was casual."
+
+  - id: "en_imaginary_glasses"
+    category: "mannerism_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:adjusted|pushed up|straightened) (?:(?:his|her|their) )?(?:non-?existent|imaginary|invisible|phantom) glasses"
+    replacements:
+      - "touched the bridge of the nose out of habit"
+      - "made an absent-minded gesture"
+      - "paused with a hand half-raised"
+    test_cases:
+      - input: "adjusted his non-existent glasses"
+        valid_outputs:
+          - "touched the bridge of the nose out of habit"
+          - "made an absent-minded gesture"
+          - "paused with a hand half-raised"
+      - input: "pushed up her imaginary glasses"
+        valid_outputs:
+          - "touched the bridge of the nose out of habit"
+          - "made an absent-minded gesture"
+          - "paused with a hand half-raised"
+    negative_cases:
+      - "He adjusted his glasses."
+      - "She pushed up her sleeves."
+
+  - id: "en_mix_washed"
+    category: "emotion_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "[Aa] mix (?:of|between) \\w+ and \\w+ (?:washed|swept|crashed|flooded) over"
+    replacements:
+      - "too many feelings hit at once"
+      - "the reaction was tangled and immediate"
+      - "everything collided inside"
+    test_cases:
+      - input: "A mix of relief and anger washed over"
+        valid_outputs:
+          - "too many feelings hit at once"
+          - "the reaction was tangled and immediate"
+          - "everything collided inside"
+      - input: "a mix between joy and sorrow swept over"
+        valid_outputs:
+          - "too many feelings hit at once"
+          - "the reaction was tangled and immediate"
+          - "everything collided inside"
+    negative_cases:
+      - "A wave washed over the deck."
+      - "She mixed the ingredients together."
+
+  - id: "en_mechanically"
+    category: "numb_cliche"
+    type: "modifier"
+    severity: "replace"
+    detect: "(?:mechanically|robotically|numbly) "
+    replacements:
+      - "dully "
+      - "on autopilot, "
+      - "without thinking, "
+    test_cases:
+      - input: "She mechanically typed the message."
+        valid_outputs:
+          - "She dully typed the message."
+          - "She on autopilot, typed the message."
+          - "She without thinking, typed the message."
+      - input: "He robotically opened the door."
+        valid_outputs:
+          - "He dully opened the door."
+          - "He on autopilot, opened the door."
+          - "He without thinking, opened the door."
+    negative_cases:
+      - "The machine operated mechanically."
+      - "It was a mechanical failure."
+
+  # ============================================================
+  # Detect-Only Weak Signals
+  # ============================================================
+
+  - id: "en_delve"
+    category: "empty_emphasis"
+    type: "full"
+    severity: "detect_only"
+    detect: "[Dd]elve(?:s|d)? (?:into|deeper into) (?:the )?\\w+"
+    replacements: []
+    test_cases:
+      - input: "Let us delve into the topic."
+        valid_outputs: []
+      - input: "She delved deeper into the mystery."
+        valid_outputs: []
+    negative_cases:
+      - "He dug into the soil."
+      - "They explored the cave."
+
+  - id: "en_tapestry"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "detect_only"
+    detect: "(?:the |a )?(?:vast |rich |intricate )?tapestry of"
+    replacements: []
+    test_cases:
+      - input: "the vast tapestry of human experience"
+        valid_outputs: []
+      - input: "a rich tapestry of cultures"
+        valid_outputs: []
+    negative_cases:
+      - "She bought a tapestry at the market."
+      - "The tapestry hung on the wall."
+
+  - id: "en_fast_paced_world"
+    category: "cliche_opener"
+    type: "full"
+    severity: "detect_only"
+    detect: "[Ii]n today'?s (?:fast-paced|digital|ever-changing|modern|rapidly evolving) (?:world|age|era|landscape)"
+    replacements: []
+    test_cases:
+      - input: "In today's fast-paced world we must adapt."
+        valid_outputs: []
+      - input: "in today's digital age information is everywhere"
+        valid_outputs: []
+    negative_cases:
+      - "The world is changing."
+      - "We live in modern times."
+
+  - id: "en_testament"
+    category: "empty_emphasis"
+    type: "full"
+    severity: "detect_only"
+    detect: "[Aa] testament to (?:his|her|their|its|the) \\w+"
+    replacements: []
+    test_cases:
+      - input: "a testament to her resilience"
+        valid_outputs: []
+      - input: "A testament to the team's effort"
+        valid_outputs: []
+    negative_cases:
+      - "The Old Testament"
+      - "He left a testament."
+
+  - id: "en_unlock_power"
+    category: "empty_emphasis"
+    type: "full"
+    severity: "detect_only"
+    detect: "[Uu]nlock(?:s|ing)? the (?:power|potential|secrets?) of"
+    replacements: []
+    test_cases:
+      - input: "Unlock the power of AI"
+        valid_outputs: []
+      - input: "unlocking the potential of data"
+        valid_outputs: []
+    negative_cases:
+      - "She unlocked the door."
+      - "He has the power to decide."

@@ -1,0 +1,1103 @@
+version: "0.1.0"
+language: "zh_CN"
+
+entries:
+  # ============================================================
+  # Thinking Gestures
+  # ============================================================
+
+  - id: "thinking_gesture_drum"
+    category: "thinking_gesture"
+    type: "full"
+    severity: "replace"
+    detect: "[右左]?手的?[食中无]?指.*?(?:敲|叩|弹|点).*?(?:桌|台|案)[面案上子]?[^，。！？；、]*"
+    replacements:
+      - "指尖在桌沿画了个圈"
+      - "手掌按住了桌面"
+      - "五指在桌上收拢又松开"
+    test_cases:
+      - input: "手指轻轻敲了敲桌面"
+        valid_outputs:
+          - "指尖在桌沿画了个圈"
+          - "手掌按住了桌面"
+          - "五指在桌上收拢又松开"
+      - input: "手指叩了叩桌案"
+        valid_outputs:
+          - "指尖在桌沿画了个圈"
+          - "手掌按住了桌面"
+          - "五指在桌上收拢又松开"
+    negative_cases:
+      - "他用手指指向远方"
+      - "她把桌面擦干净了"
+    notes: "Matches stereotypical finger-drumming-on-table indicating thought"
+
+  - id: "thinking_gesture_cup"
+    category: "thinking_gesture"
+    type: "full"
+    severity: "replace"
+    detect: "(?:修长的)?手指.*?(?:摩挲|把玩|转动|抚摸).*?(?:杯[沿壁子]?|盏|茶碗|酒杯|棋子|玉佩)[^，。！？；、]*"
+    replacements:
+      - "手指停了下来"
+      - "手上的动作顿了顿"
+      - "手指收了回去"
+    test_cases:
+      - input: "修长的手指摩挲着杯沿"
+        valid_outputs:
+          - "手指停了下来"
+          - "手上的动作顿了顿"
+          - "手指收了回去"
+      - input: "手指把玩着棋子"
+        valid_outputs:
+          - "手指停了下来"
+          - "手上的动作顿了顿"
+          - "手指收了回去"
+    negative_cases:
+      - "她拿起杯子喝了一口"
+      - "他把棋子放在了棋盘上"
+    notes: "Replacements use hand/finger nouns only, avoiding specific object references since detect matches multiple objects"
+
+  # ============================================================
+  # Generic Posture
+  # ============================================================
+
+  - id: "generic_posture_arms"
+    category: "generic_posture"
+    type: "full"
+    severity: "replace"
+    detect: "双手(?:交叉|抱|环).*?(?:胸前|胸口)[^，。！？；、]*"
+    replacements:
+      - "两手撑在桌上"
+      - "一手搭在椅背上"
+      - "两手插进袖子里"
+    test_cases:
+      - input: "双手交叉在胸前"
+        valid_outputs:
+          - "两手撑在桌上"
+          - "一手搭在椅背上"
+          - "两手插进袖子里"
+      - input: "双手环抱在胸口"
+        valid_outputs:
+          - "两手撑在桌上"
+          - "一手搭在椅背上"
+          - "两手插进袖子里"
+    negative_cases:
+      - "双手合十表示感谢"
+      - "他把双手放在膝盖上"
+
+  # ============================================================
+  # Facial Expressions
+  # ============================================================
+
+  - id: "generic_smile"
+    category: "generic_smile"
+    type: "full"
+    severity: "replace"
+    detect: "嘴角.*?(?:微微|轻轻|缓缓)?(?:上扬|勾起|翘起|扬起|弯起)[^，。！？；、]*"
+    replacements:
+      - "嘴唇弯了弯"
+      - "脸上露出点笑意"
+      - "表情松了松"
+      - "笑意从眼底漫出来"
+      - "脸上柔和了几分"
+    test_cases:
+      - input: "嘴角微微上扬"
+        valid_outputs:
+          - "嘴唇弯了弯"
+          - "脸上露出点笑意"
+          - "表情松了松"
+          - "笑意从眼底漫出来"
+          - "脸上柔和了几分"
+      - input: "嘴角轻轻勾起一抹弧度"
+        valid_outputs:
+          - "嘴唇弯了弯"
+          - "脸上露出点笑意"
+          - "表情松了松"
+          - "笑意从眼底漫出来"
+          - "脸上柔和了几分"
+    negative_cases:
+      - "她低着头不说话"
+      - "他张开嘴说了句话"
+    notes: "Replacements use noun phrases compatible with possessive prefix (X的嘴唇弯了弯)"
+
+  - id: "generic_brow"
+    category: "generic_brow"
+    type: "full"
+    severity: "replace"
+    detect: "眉[头梢].*?(?:微微|轻轻|不易察觉地)?(?:蹙起|皱起|蹙了蹙|皱了皱|一挑|上挑)[^，。！？；、]*"
+    replacements:
+      - "脸色沉了沉"
+      - "表情收紧了"
+      - "额头现出几道纹路"
+      - "神情变了变"
+      - "面上多了几分不耐"
+    test_cases:
+      - input: "眉头微微蹙起"
+        valid_outputs:
+          - "脸色沉了沉"
+          - "表情收紧了"
+          - "额头现出几道纹路"
+          - "神情变了变"
+          - "面上多了几分不耐"
+      - input: "眉梢轻轻一挑"
+        valid_outputs:
+          - "脸色沉了沉"
+          - "表情收紧了"
+          - "额头现出几道纹路"
+          - "神情变了变"
+          - "面上多了几分不耐"
+    negative_cases:
+      - "她画了画眉毛"
+      - "他的眉毛很浓"
+    notes: "Regex uses compound verbs to match full forms like 蹙起, 皱了皱"
+
+  # ============================================================
+  # Emotion Flash
+  # ============================================================
+
+  - id: "emotion_flash"
+    category: "emotion_flash"
+    type: "prefix"
+    severity: "replace"
+    suffix_type: "emotion_word"
+    detect: "眼[中底里神].*?闪过一[丝抹道缕]"
+    replacements:
+      - "目光中多了几分"
+      - "眼里有了一点"
+      - "带着几分"
+      - "透出一种"
+      - "流露出些许"
+    test_cases:
+      - input: "眼中闪过一丝坚定"
+        suffix: "坚定"
+        valid_outputs:
+          - "目光中多了几分坚定"
+          - "眼里有了一点坚定"
+          - "带着几分坚定"
+          - "透出一种坚定"
+          - "流露出些许坚定"
+      - input: "眼神里闪过一抹复杂"
+        suffix: "复杂"
+        valid_outputs:
+          - "目光中多了几分复杂"
+          - "眼里有了一点复杂"
+          - "带着几分复杂"
+          - "透出一种复杂"
+          - "流露出些许复杂"
+      - input: "眼底闪过一缕哀伤"
+        suffix: "哀伤"
+        valid_outputs:
+          - "目光中多了几分哀伤"
+          - "眼里有了一点哀伤"
+          - "带着几分哀伤"
+          - "透出一种哀伤"
+          - "流露出些许哀伤"
+    negative_cases:
+      - "他的眼睛闪闪发光"
+      - "眼前闪过一道白光"
+
+  - id: "emotion_flash_flicker"
+    category: "emotion_flash"
+    type: "full"
+    severity: "replace"
+    detect: "目光.*?(?:微微|不易察觉地)?(?:闪烁|闪动|一闪)[^，。！？；、]*"
+    replacements:
+      - "目光定了定"
+      - "视线停了一下"
+      - "眼神晃了晃"
+    test_cases:
+      - input: "目光微微闪烁"
+        valid_outputs:
+          - "目光定了定"
+          - "视线停了一下"
+          - "眼神晃了晃"
+      - input: "目光不易察觉地一闪"
+        valid_outputs:
+          - "目光定了定"
+          - "视线停了一下"
+          - "眼神晃了晃"
+    negative_cases:
+      - "月光闪烁在水面上"
+      - "灯光微微闪动"
+    notes: "Replacements start with eye/gaze nouns for possessive prefix compatibility"
+
+  # ============================================================
+  # Pupil
+  # ============================================================
+
+  - id: "pupil_cliche"
+    category: "pupil_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "瞳孔.*?(?:微微|猛然)?(?:收缩|一缩|紧缩|放大)[^，。！？；、]*"
+    replacements:
+      - "神色微变"
+      - "表情一僵"
+      - "目光一凛"
+    test_cases:
+      - input: "瞳孔微微收缩"
+        valid_outputs:
+          - "神色微变"
+          - "表情一僵"
+          - "目光一凛"
+      - input: "瞳孔猛然放大"
+        valid_outputs:
+          - "神色微变"
+          - "表情一僵"
+          - "目光一凛"
+    negative_cases:
+      - "医生检查了他的瞳孔"
+      - "她的瞳孔是深棕色的"
+    notes: "Replacements use noun phrases for possessive prefix compatibility (X的神色微变)"
+
+  # ============================================================
+  # Inner Feeling
+  # ============================================================
+
+  - id: "inner_feeling"
+    category: "inner_feeling"
+    type: "prefix"
+    severity: "replace"
+    suffix_type: "abstract_noun"
+    detect: "(?:心中|心里|内心).*?(?:涌起|升起|泛起|浮起).*?(?:一股|一阵|一丝)"
+    replacements:
+      - "隐隐觉出了些"
+      - "开始感到了"
+      - "胸口浮起一点"
+      - "慢慢察觉到了"
+      - "有了一种说不上来的"
+    test_cases:
+      - input: "心中涌起一股暖意"
+        suffix: "暖意"
+        valid_outputs:
+          - "隐隐觉出了些暖意"
+          - "开始感到了暖意"
+          - "胸口浮起一点暖意"
+          - "慢慢察觉到了暖意"
+          - "有了一种说不上来的暖意"
+      - input: "内心升起一丝不安"
+        suffix: "不安"
+        valid_outputs:
+          - "隐隐觉出了些不安"
+          - "开始感到了不安"
+          - "胸口浮起一点不安"
+          - "慢慢察觉到了不安"
+          - "有了一种说不上来的不安"
+    negative_cases:
+      - "心中有了答案"
+      - "她的内心很平静"
+
+  # ============================================================
+  # Auto Action (Modifier)
+  # ============================================================
+
+  - id: "auto_action"
+    category: "auto_action"
+    type: "modifier"
+    severity: "replace"
+    detect: "(?:不自觉|不由自主|下意识)地"
+    replacements:
+      - "本能地"
+      - "无意识地"
+      - "反射性地"
+    test_cases:
+      - input: "他不自觉地后退了一步"
+        valid_outputs:
+          - "他本能地后退了一步"
+          - "他无意识地后退了一步"
+          - "他反射性地后退了一步"
+      - input: "她不由自主地攥紧了衣角"
+        valid_outputs:
+          - "她本能地攥紧了衣角"
+          - "她无意识地攥紧了衣角"
+          - "她反射性地攥紧了衣角"
+      - input: "众人下意识地屏住了呼吸"
+        valid_outputs:
+          - "众人本能地屏住了呼吸"
+          - "众人无意识地屏住了呼吸"
+          - "众人反射性地屏住了呼吸"
+    negative_cases:
+      - "他有意识地做出了选择"
+      - "她自觉地收拾了房间"
+    notes: "Modifier-only: surrounding subject/verb/object all preserved"
+
+  # ============================================================
+  # Poetic Filler
+  # ============================================================
+
+  - id: "poetic_filler"
+    category: "poetic_filler"
+    type: "full"
+    severity: "replace"
+    detect: "仿佛.*?(?:在|要).*?(?:诉说|倾诉|传达)[^，。！？；、]*"
+    replacements:
+      - "带着某种说不出的东西"
+      - "有了些旁人看不懂的意味"
+      - "变得有些遥远"
+    test_cases:
+      - input: "仿佛在诉说着什么深沉的往事"
+        valid_outputs:
+          - "带着某种说不出的东西"
+          - "有了些旁人看不懂的意味"
+          - "变得有些遥远"
+      - input: "仿佛要传达什么"
+        valid_outputs:
+          - "带着某种说不出的东西"
+          - "有了些旁人看不懂的意味"
+          - "变得有些遥远"
+    negative_cases:
+      - "她向朋友诉说了自己的遭遇"
+      - "他在文章中传达了重要的信息"
+    notes: "Trailing content consumed by [^punc]* to handle 着什么深沉的往事"
+
+  # ============================================================
+  # Vague Emotion
+  # ============================================================
+
+  - id: "vague_emotion"
+    category: "vague_emotion"
+    type: "prefix"
+    severity: "replace"
+    suffix_type: "abstract_noun"
+    detect: "一种难以言喻的"
+    replacements:
+      - "说不清的"
+      - "从没体验过的"
+      - "陌生的"
+    test_cases:
+      - input: "一种难以言喻的压迫感"
+        suffix: "压迫感"
+        valid_outputs:
+          - "说不清的压迫感"
+          - "从没体验过的压迫感"
+          - "陌生的压迫感"
+      - input: "一种难以言喻的感觉"
+        suffix: "感觉"
+        valid_outputs:
+          - "说不清的感觉"
+          - "从没体验过的感觉"
+          - "陌生的感觉"
+    negative_cases:
+      - "这种感觉很难描述"
+      - "他说不出那是什么"
+
+  # ============================================================
+  # Atmosphere
+  # ============================================================
+
+  - id: "frozen_air"
+    category: "frozen_air"
+    type: "full"
+    severity: "replace"
+    detect: "空气.*?(?:仿佛|似乎|好像).*?(?:凝固|凝结|静止|冻结)[^，。！？；、]*"
+    replacements:
+      - "空气沉了下来"
+      - "四下里静得发闷"
+      - "空气变得黏稠起来"
+    test_cases:
+      - input: "空气仿佛凝固了"
+        valid_outputs:
+          - "空气沉了下来"
+          - "四下里静得发闷"
+          - "空气变得黏稠起来"
+      - input: "空气似乎都凝结了一般"
+        valid_outputs:
+          - "空气沉了下来"
+          - "四下里静得发闷"
+          - "空气变得黏稠起来"
+    negative_cases:
+      - "冬天的空气很冷"
+      - "凝固的冰块开始融化"
+
+  - id: "spreading_silence"
+    category: "spreading_silence"
+    type: "full"
+    severity: "replace"
+    detect: "沉默(?:在[^，。！？；、]*?)?(?:蔓延|弥漫|笼罩)[^，。！？；、]*"
+    replacements:
+      - "沉默拖得越来越长"
+      - "安静变得有些难熬"
+      - "沉默压在头顶上"
+    test_cases:
+      - input: "沉默蔓延开来"
+        valid_outputs:
+          - "沉默拖得越来越长"
+          - "安静变得有些难熬"
+          - "沉默压在头顶上"
+      - input: "沉默弥漫了整个房间"
+        valid_outputs:
+          - "沉默拖得越来越长"
+          - "安静变得有些难熬"
+          - "沉默压在头顶上"
+    negative_cases:
+      - "他选择了沉默"
+      - "沉默是金"
+
+  - id: "atmosphere_shift"
+    category: "atmosphere_shift"
+    type: "full"
+    severity: "replace"
+    detect: "气氛.*?(?:变得|陡然|瞬间).*?(?:微妙|紧张|凝重)[^，。！？；、]*"
+    replacements:
+      - "气氛绷了起来"
+      - "场面一时有些僵"
+      - "空气里多了股压迫感"
+    test_cases:
+      - input: "气氛变得微妙起来"
+        valid_outputs:
+          - "气氛绷了起来"
+          - "场面一时有些僵"
+          - "空气里多了股压迫感"
+      - input: "气氛陡然变得凝重"
+        valid_outputs:
+          - "气氛绷了起来"
+          - "场面一时有些僵"
+          - "空气里多了股压迫感"
+    negative_cases:
+      - "聚会的气氛很好"
+      - "春天的气氛"
+
+  # ============================================================
+  # Physical Cliches
+  # ============================================================
+
+  - id: "spine_chill"
+    category: "spine_chill"
+    type: "full"
+    severity: "replace"
+    detect: "(?:一股|一阵).*?(?:寒意|凉意).*?(?:从|沿).*?(?:脊背|脊椎|后背|尾椎).*?(?:升起|蔓延|窜上)[^，。！？；、]*"
+    replacements:
+      - "后背的汗毛竖了起来"
+      - "身上起了一层鸡皮疙瘩"
+      - "冷汗渗了出来"
+    test_cases:
+      - input: "一股寒意从脊背升起"
+        valid_outputs:
+          - "后背的汗毛竖了起来"
+          - "身上起了一层鸡皮疙瘩"
+          - "冷汗渗了出来"
+      - input: "一阵凉意沿着脊椎窜上来"
+        valid_outputs:
+          - "后背的汗毛竖了起来"
+          - "身上起了一层鸡皮疙瘩"
+          - "冷汗渗了出来"
+    negative_cases:
+      - "天气很冷"
+      - "他的后背很宽阔"
+
+  - id: "throat_bob"
+    category: "throat_bob"
+    type: "full"
+    severity: "replace"
+    detect: "(?:喉结|喉头).*?(?:上下|微微).*?(?:滚动|滑动|一动)[^，。！？；、]*"
+    replacements:
+      - "脖子上的筋绷了一下"
+      - "喉咙发紧"
+      - "嗓子像是被什么堵住了"
+    test_cases:
+      - input: "喉结上下滚动了一下"
+        valid_outputs:
+          - "脖子上的筋绷了一下"
+          - "喉咙发紧"
+          - "嗓子像是被什么堵住了"
+      - input: "喉头微微一动"
+        valid_outputs:
+          - "脖子上的筋绷了一下"
+          - "喉咙发紧"
+          - "嗓子像是被什么堵住了"
+    negative_cases:
+      - "他清了清嗓子"
+      - "喉咙有些干"
+
+  - id: "fist_clench"
+    category: "fist_clench"
+    type: "full"
+    severity: "replace"
+    detect: "(?:攥紧|握紧|捏紧)了(?:拳头|拳|双拳)[^，。！？；、]*"
+    replacements:
+      - "指甲掐进了掌心"
+      - "手指收紧了"
+      - "手背上青筋凸起"
+      - "十指扣在了一起"
+      - "两手攥成了铁锤"
+    test_cases:
+      - input: "攥紧了拳头"
+        valid_outputs:
+          - "指甲掐进了掌心"
+          - "手指收紧了"
+          - "手背上青筋凸起"
+          - "十指扣在了一起"
+          - "两手攥成了铁锤"
+      - input: "握紧了双拳"
+        valid_outputs:
+          - "指甲掐进了掌心"
+          - "手指收紧了"
+          - "手背上青筋凸起"
+          - "十指扣在了一起"
+          - "两手攥成了铁锤"
+    negative_cases:
+      - "他握住了她的手"
+      - "紧紧抓住绳子"
+
+  # ============================================================
+  # Breath / Physical Reactions
+  # ============================================================
+
+  - id: "deep_breath"
+    category: "breath_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "深深(?:地)?(?:吸|呼)了(?:一)?口(?:气|长气)[^，。！？；、]*"
+    replacements:
+      - "胸口起伏了一下"
+      - "鼻翼张了张"
+      - "停了一拍才开口"
+    test_cases:
+      - input: "深深吸了一口气"
+        valid_outputs:
+          - "胸口起伏了一下"
+          - "鼻翼张了张"
+          - "停了一拍才开口"
+      - input: "深深地呼了口长气"
+        valid_outputs:
+          - "胸口起伏了一下"
+          - "鼻翼张了张"
+          - "停了一拍才开口"
+    negative_cases:
+      - "他吸了一口烟"
+      - "她深深地看了他一眼"
+
+  - id: "gasp_cold"
+    category: "breath_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:不由得|不禁|忍不住)?倒吸了?一口(?:凉|冷)气[^，。！？；、]*"
+    replacements:
+      - "愣了一下"
+      - "气息一滞"
+      - "喉咙里发出一声短促的气音"
+    test_cases:
+      - input: "不由得倒吸了一口凉气"
+        valid_outputs:
+          - "愣了一下"
+          - "气息一滞"
+          - "喉咙里发出一声短促的气音"
+      - input: "倒吸一口冷气"
+        valid_outputs:
+          - "愣了一下"
+          - "气息一滞"
+          - "喉咙里发出一声短促的气音"
+    negative_cases:
+      - "外面的冷气很足"
+      - "他吸了一口冷空气"
+
+  # ============================================================
+  # Metaphor Cliches
+  # ============================================================
+
+  - id: "fate_gears"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "命运的齿轮.*?(?:开始|仿佛|似乎)?(?:转动|旋转|运转)[^，。！？；、]*"
+    replacements:
+      - "事情开始变了"
+      - "一切从这里岔了出去"
+      - "转折来得毫无预兆"
+    test_cases:
+      - input: "命运的齿轮开始转动"
+        valid_outputs:
+          - "事情开始变了"
+          - "一切从这里岔了出去"
+          - "转折来得毫无预兆"
+      - input: "命运的齿轮仿佛在悄然旋转"
+        valid_outputs:
+          - "事情开始变了"
+          - "一切从这里岔了出去"
+          - "转折来得毫无预兆"
+    negative_cases:
+      - "齿轮咬合得很紧密"
+      - "他修好了坏掉的齿轮"
+
+  - id: "painting_metaphor"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:宛如|犹如|像是|仿佛)一幅.*?(?:画卷|图画|油画)[^，。！？；、]*"
+    replacements:
+      - "看得人挪不开眼"
+      - "让人一时忘了说话"
+      - "好看得不太真实"
+    test_cases:
+      - input: "宛如一幅美丽的画卷"
+        valid_outputs:
+          - "看得人挪不开眼"
+          - "让人一时忘了说话"
+          - "好看得不太真实"
+      - input: "仿佛一幅泼墨山水的图画"
+        valid_outputs:
+          - "看得人挪不开眼"
+          - "让人一时忘了说话"
+          - "好看得不太真实"
+    negative_cases:
+      - "她画了一幅画"
+      - "这幅画卷保存完好"
+
+  - id: "stone_ripple"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:像|如同|好像|仿佛).*?(?:石子|石头|石块).*?(?:砸进|落入|投入|扔进).*?(?:水面|心湖|湖面)[^，。！？；、]*"
+    replacements:
+      - "带来的冲击不小"
+      - "砸得人一愣"
+      - "落下来就没再收回去"
+    test_cases:
+      - input: "像一颗石子砸进水面"
+        valid_outputs:
+          - "带来的冲击不小"
+          - "砸得人一愣"
+          - "落下来就没再收回去"
+      - input: "如同石头落入心湖"
+        valid_outputs:
+          - "带来的冲击不小"
+          - "砸得人一愣"
+          - "落下来就没再收回去"
+    negative_cases:
+      - "他往湖里扔了一颗石子"
+      - "水面上泛起了涟漪"
+
+  - id: "lightning_strike"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:仿佛|如同|像是?)一道(?:霹雳|闪电|雷).*?(?:打入|劈入|击中|划过)[^，。！？；、]*"
+    replacements:
+      - "来得又快又狠"
+      - "劈头盖脸地砸了下来"
+      - "毫无预兆地击中了要害"
+    test_cases:
+      - input: "仿佛一道霹雳打入了脑海"
+        valid_outputs:
+          - "来得又快又狠"
+          - "劈头盖脸地砸了下来"
+          - "毫无预兆地击中了要害"
+      - input: "如同一道闪电击中了他"
+        valid_outputs:
+          - "来得又快又狠"
+          - "劈头盖脸地砸了下来"
+          - "毫无预兆地击中了要害"
+    negative_cases:
+      - "一道闪电划过天空"
+      - "远处传来霹雳声"
+
+  - id: "despair_vines"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:绝望|恐惧|不安)的(?:藤蔓|荆棘|根须).*?(?:缠住|缠绕|蔓延|滋长|攀上)[^，。！？；、]*"
+    replacements:
+      - "那种感觉越来越重"
+      - "胸口闷得喘不上气"
+      - "整个人像泡在冷水里"
+    test_cases:
+      - input: "绝望的藤蔓缠住了他"
+        valid_outputs:
+          - "那种感觉越来越重"
+          - "胸口闷得喘不上气"
+          - "整个人像泡在冷水里"
+      - input: "恐惧的根须在心中蔓延"
+        valid_outputs:
+          - "那种感觉越来越重"
+          - "胸口闷得喘不上气"
+          - "整个人像泡在冷水里"
+    negative_cases:
+      - "藤蔓爬满了墙壁"
+      - "花园里的荆棘需要修剪"
+
+  - id: "ripple_wave"
+    category: "metaphor_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:心中|心里|内心|心头).*?泛起.*?(?:波澜|涟漪|波纹)[^，。！？；、]*"
+    replacements:
+      - "心里不太平静"
+      - "有些触动"
+      - "心思活泛了起来"
+    test_cases:
+      - input: "心中泛起了波澜"
+        valid_outputs:
+          - "心里不太平静"
+          - "有些触动"
+          - "心思活泛了起来"
+      - input: "心里泛起一阵涟漪"
+        valid_outputs:
+          - "心里不太平静"
+          - "有些触动"
+          - "心思活泛了起来"
+    negative_cases:
+      - "湖面泛起了涟漪"
+      - "水面上的波纹渐渐消散"
+
+  # ============================================================
+  # Eye / Tears
+  # ============================================================
+
+  - id: "eye_rim_red"
+    category: "eye_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "眼[眶圈].*?(?:泛红|湿润|发红|红了|热了|发酸|酸了)[^，。！？；、]*"
+    replacements:
+      - "鼻子一酸"
+      - "视线有些模糊"
+      - "眼睛涩得厉害"
+    test_cases:
+      - input: "眼眶泛红了"
+        valid_outputs:
+          - "鼻子一酸"
+          - "视线有些模糊"
+          - "眼睛涩得厉害"
+      - input: "眼圈忽然湿润了"
+        valid_outputs:
+          - "鼻子一酸"
+          - "视线有些模糊"
+          - "眼睛涩得厉害"
+    negative_cases:
+      - "她的眼睛是红色的"
+      - "兔子的眼圈是粉色的"
+
+  - id: "physiological_tears"
+    category: "eye_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:落下|流下|掉下|滑落)了?(?:一行|一滴|两行)?生理性(?:的)?泪水[^，。！？；、]*"
+    replacements:
+      - "眼泪掉了下来"
+      - "泪水顺着脸滑了下去"
+      - "眼睛湿了"
+    test_cases:
+      - input: "落下了生理性泪水"
+        valid_outputs:
+          - "眼泪掉了下来"
+          - "泪水顺着脸滑了下去"
+          - "眼睛湿了"
+      - input: "流下两行生理性的泪水"
+        valid_outputs:
+          - "眼泪掉了下来"
+          - "泪水顺着脸滑了下去"
+          - "眼睛湿了"
+    negative_cases:
+      - "她流了很多眼泪"
+      - "泪水止不住地流"
+
+  # ============================================================
+  # Emotion / Heart
+  # ============================================================
+
+  - id: "heart_sink"
+    category: "heart_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "心[中里头]?.*?(?:猛地|猛然)?(?:一沉|一紧|一颤|一痛|一揪)[^，。！？；、]*"
+    replacements:
+      - "胃里翻了一下"
+      - "身上的力气抽走了几分"
+      - "整个人僵了一瞬"
+    test_cases:
+      - input: "心猛地一沉"
+        valid_outputs:
+          - "胃里翻了一下"
+          - "身上的力气抽走了几分"
+          - "整个人僵了一瞬"
+      - input: "心里一紧"
+        valid_outputs:
+          - "胃里翻了一下"
+          - "身上的力气抽走了几分"
+          - "整个人僵了一瞬"
+    negative_cases:
+      - "心里有些不安"
+      - "他心中有数"
+
+  # ============================================================
+  # Smile Variants
+  # ============================================================
+
+  - id: "bitter_smile"
+    category: "smile_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:露出|挤出|浮现出?|勉强).*?(?:一丝|一个|一抹)?(?:苦笑|苦涩的笑|勉强的笑)[^，。！？；、]*"
+    replacements:
+      - "嘴巴动了动没说话"
+      - "笑了一下但眼睛没笑"
+      - "扯了扯嘴角"
+    test_cases:
+      - input: "露出一抹苦笑"
+        valid_outputs:
+          - "嘴巴动了动没说话"
+          - "笑了一下但眼睛没笑"
+          - "扯了扯嘴角"
+      - input: "勉强挤出一个苦涩的笑"
+        valid_outputs:
+          - "嘴巴动了动没说话"
+          - "笑了一下但眼睛没笑"
+          - "扯了扯嘴角"
+    negative_cases:
+      - "她开心地笑了"
+      - "苦笑着摇摇头"
+
+  - id: "sly_smile"
+    category: "smile_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:狡黠|狡猾|意味深长)(?:地|的)(?:一笑|笑了笑|笑了一下)[^，。！？；、]*"
+    replacements:
+      - "眯了眯眼"
+      - "表情变得玩味"
+      - "嘴角往一边歪了歪"
+    test_cases:
+      - input: "狡黠地一笑"
+        valid_outputs:
+          - "眯了眯眼"
+          - "表情变得玩味"
+          - "嘴角往一边歪了歪"
+      - input: "意味深长地笑了笑"
+        valid_outputs:
+          - "眯了眯眼"
+          - "表情变得玩味"
+          - "嘴角往一边歪了歪"
+    negative_cases:
+      - "他笑得很开心"
+      - "她微笑着点头"
+
+  # ============================================================
+  # Body Reactions
+  # ============================================================
+
+  - id: "body_stiffen"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:整个人|全身|身体|身子).*?(?:猛地|猛然|不由得|瞬间)?(?:一僵|一颤|一抖|一震|僵住|僵在)[^，。！？；、]*"
+    replacements:
+      - "脚步顿了一下"
+      - "手上的动作停了"
+      - "整个人定在了原地"
+    test_cases:
+      - input: "身体猛地一僵"
+        valid_outputs:
+          - "脚步顿了一下"
+          - "手上的动作停了"
+          - "整个人定在了原地"
+      - input: "整个人瞬间僵住了"
+        valid_outputs:
+          - "脚步顿了一下"
+          - "手上的动作停了"
+          - "整个人定在了原地"
+    negative_cases:
+      - "他站在那里不动"
+      - "她的身体很柔软"
+
+  - id: "throat_sound"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "喉[间头咙].*?(?:滚出|挤出|发出|溢出|逸出).*?(?:一声|几声)?(?:低[吟叹哑沉]|闷哼|嘶哑的声|呜咽)[^，。！？；、]*"
+    replacements:
+      - "声音哑了一下"
+      - "嗓子像被攥住了"
+      - "嗓音变得含糊不清"
+    test_cases:
+      - input: "喉间滚出一声低吟"
+        valid_outputs:
+          - "声音哑了一下"
+          - "嗓子像被攥住了"
+          - "嗓音变得含糊不清"
+      - input: "喉咙里发出闷哼"
+        valid_outputs:
+          - "声音哑了一下"
+          - "嗓子像被攥住了"
+          - "嗓音变得含糊不清"
+    negative_cases:
+      - "他清了清喉咙"
+      - "她大声喊了出来"
+
+  - id: "bite_lip"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:咬破|咬住|咬紧|死死咬住)了?(?:自己的)?(?:嘴唇|下唇|唇)[^，。！？；、]*"
+    replacements:
+      - "把要说的话咽了回去"
+      - "牙关紧了紧"
+      - "嘴唇抿成了一条线"
+    test_cases:
+      - input: "咬破了嘴唇"
+        valid_outputs:
+          - "把要说的话咽了回去"
+          - "牙关紧了紧"
+          - "嘴唇抿成了一条线"
+      - input: "死死咬住了下唇"
+        valid_outputs:
+          - "把要说的话咽了回去"
+          - "牙关紧了紧"
+          - "嘴唇抿成了一条线"
+    negative_cases:
+      - "她涂了口红"
+      - "他的嘴唇很干"
+
+  - id: "swallow_hard"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:艰难地|用力|使劲)?咽了(?:咽|一下)?(?:口|一口)?(?:唾沫|口水|吐沫)[^，。！？；、]*"
+    replacements:
+      - "嗓子动了动"
+      - "顿了一下才开口"
+      - "喉结上下滑了一下"
+    test_cases:
+      - input: "咽了口唾沫"
+        valid_outputs:
+          - "嗓子动了动"
+          - "顿了一下才开口"
+          - "喉结上下滑了一下"
+      - input: "艰难地咽了一下口水"
+        valid_outputs:
+          - "嗓子动了动"
+          - "顿了一下才开口"
+          - "喉结上下滑了一下"
+    negative_cases:
+      - "他喝了口水"
+      - "她吞下了药片"
+
+  - id: "knuckle_white"
+    category: "body_cliche"
+    type: "full"
+    severity: "replace"
+    detect: "(?:指节|指尖|手指|指关节).*?(?:泛白|发白|苍白|攥得.*?白)[^，。！？；、]*"
+    replacements:
+      - "手指掐进了掌心"
+      - "指甲嵌进了皮肉"
+      - "手在微微打颤"
+    test_cases:
+      - input: "指节泛白"
+        valid_outputs:
+          - "手指掐进了掌心"
+          - "指甲嵌进了皮肉"
+          - "手在微微打颤"
+      - input: "手指攥得发白"
+        valid_outputs:
+          - "手指掐进了掌心"
+          - "指甲嵌进了皮肉"
+          - "手在微微打颤"
+    negative_cases:
+      - "她的手指很纤细"
+      - "他指了指远处"
+
+  # ============================================================
+  # Modifier: Mechanical/Numb
+  # ============================================================
+
+  - id: "numb_mechanical"
+    category: "numb_cliche"
+    type: "modifier"
+    severity: "replace"
+    detect: "(?:机械|麻木)(?:地|的)"
+    replacements:
+      - "木然地"
+      - "迟钝地"
+      - "不带表情地"
+    test_cases:
+      - input: "她机械地敲着屏幕"
+        valid_outputs:
+          - "她木然地敲着屏幕"
+          - "她迟钝地敲着屏幕"
+          - "她不带表情地敲着屏幕"
+      - input: "他麻木地重复着动作"
+        valid_outputs:
+          - "他木然地重复着动作"
+          - "他迟钝地重复着动作"
+          - "他不带表情地重复着动作"
+    negative_cases:
+      - "这是一个机械零件"
+      - "他感到一阵麻木"
+    notes: "Modifier-only: surrounding subject/verb/object all preserved"
+
+  # ============================================================
+  # Detect-Only Weak Signals
+  # ============================================================
+
+  - id: "notable_prefix"
+    category: "filler_prefix"
+    type: "full"
+    severity: "detect_only"
+    detect: "(?:值得注意的是|需要指出的是|不难看出)"
+    replacements: []
+    test_cases:
+      - input: "值得注意的是这个问题"
+        valid_outputs: []
+      - input: "不难看出他的意图"
+        valid_outputs: []
+    negative_cases:
+      - "他注意到了远处的灯光"
+      - "她指出了错误"
+
+  - id: "not_only_but_also"
+    category: "formula_sentence"
+    type: "full"
+    severity: "detect_only"
+    detect: "这不仅仅是.*?更是"
+    replacements: []
+    test_cases:
+      - input: "这不仅仅是一次考试更是一次磨练"
+        valid_outputs: []
+      - input: "这不仅仅是表面问题更是深层矛盾"
+        valid_outputs: []
+    negative_cases:
+      - "他不仅来了还带了礼物"
+      - "这是一个重要的决定"
+
+  - id: "pivotal_role"
+    category: "empty_emphasis"
+    type: "full"
+    severity: "detect_only"
+    detect: "(?:扮演|起)着(?:举足轻重|至关重要|不可或缺)的(?:角色|作用)"
+    replacements: []
+    test_cases:
+      - input: "扮演着举足轻重的角色"
+        valid_outputs: []
+      - input: "起着至关重要的作用"
+        valid_outputs: []
+    negative_cases:
+      - "他在剧中扮演一个配角"
+      - "这个零件起了作用"
+
+  - id: "deep_explore"
+    category: "empty_emphasis"
+    type: "full"
+    severity: "detect_only"
+    detect: "深入(?:探讨|探索|挖掘|剖析).*?(?:内涵|本质|可能性|边界)"
+    replacements: []
+    test_cases:
+      - input: "深入探讨这个问题的内涵"
+        valid_outputs: []
+      - input: "深入探索技术的可能性"
+        valid_outputs: []
+    negative_cases:
+      - "他深入洞穴寻找出路"
+      - "探索未知的领域"
+
+  - id: "summary_prefix"
+    category: "filler_prefix"
+    type: "full"
+    severity: "detect_only"
+    detect: "(?:总而言之|综上所述|总的来说)"
+    replacements: []
+    test_cases:
+      - input: "总而言之情况不太乐观"
+        valid_outputs: []
+      - input: "综上所述我们需要改变策略"
+        valid_outputs: []
+    negative_cases:
+      - "他总是迟到"
+      - "概括地说就是这样"

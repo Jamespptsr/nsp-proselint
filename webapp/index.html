@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProLint - Cliche Detector</title>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <div class="files-section">
+                <div class="panel-header">
+                    <span class="panel-title">Files</span>
+                    <button id="btn-import" class="btn-icon" title="Import files">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 1v10M4 7l4 4 4-4M2 13h12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="file-list" class="file-list"></div>
+            </div>
+            <div class="log-section">
+                <div class="panel-header">
+                    <span class="panel-title">Activity</span>
+                    <button id="btn-clear-log" class="btn-icon btn-small" title="Clear log">
+                        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                            <path d="M4 4l8 8M12 4l-8 8"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="activity-log" class="activity-log"></div>
+            </div>
+        </div>
+
+        <!-- CENTER PANEL -->
+        <div class="center-panel">
+            <div class="center-toolbar">
+                <div class="toolbar-left">
+                    <span id="file-name" class="file-name-display">No file loaded</span>
+                    <span id="stats-display" class="stats-display"></span>
+                </div>
+                <div class="toolbar-right">
+                    <button id="btn-export" class="btn-toolbar" disabled>
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 11V1M4 5l4-4 4 4M2 13h12"/>
+                        </svg>
+                        Export
+                    </button>
+                </div>
+            </div>
+            <div id="text-display" class="text-display">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#808080" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M28 6H12a2 2 0 00-2 2v30a2 2 0 002 2h24a2 2 0 002-2V16L28 6z"/>
+                            <path d="M28 6v10h10M16 24h16M16 30h10"/>
+                        </svg>
+                    </div>
+                    <p>Drop files here or click Import</p>
+                    <p class="empty-hint">Supports .txt, .md, .docx</p>
+                </div>
+            </div>
+            <!-- Replacement popup (positioned absolutely) -->
+            <div id="replace-popup" class="replace-popup" style="display:none;">
+                <div class="popup-header">
+                    <span class="popup-category" id="popup-category"></span>
+                    <span class="popup-match" id="popup-match"></span>
+                </div>
+                <div class="popup-replacements" id="popup-replacements"></div>
+                <div class="popup-custom">
+                    <input type="text" id="popup-custom-input" placeholder="Custom replacement...">
+                    <button id="popup-custom-apply" class="btn-small-action">Apply</button>
+                </div>
+                <div class="popup-actions">
+                    <button id="popup-skip" class="btn-small-action btn-skip">Skip</button>
+                    <button id="popup-revert" class="btn-small-action btn-revert" style="display:none;">Revert</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="right-panel" id="right-panel">
+            <div class="panel-header">
+                <span class="panel-title">Hits</span>
+                <div class="panel-header-actions">
+                    <select id="filter-category" class="filter-select">
+                        <option value="">All categories</option>
+                    </select>
+                    <button id="btn-collapse-right" class="btn-icon" title="Collapse panel">
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 4l4 4-4 4"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="hit-list" class="hit-list"></div>
+        </div>
+        <!-- Collapsed right panel toggle -->
+        <button id="btn-expand-right" class="btn-expand-right" style="display:none;" title="Show hit list">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 4l-4 4 4 4"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Hidden file input -->
+    <input type="file" id="file-input" multiple accept=".txt,.md,.docx" style="display:none;">
+
+    <script src="lib/jszip.min.js"></script>
+    <script src="js/linter.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/files.js"></script>
+    <script src="js/docx.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

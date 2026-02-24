@@ -1,0 +1,499 @@
+[
+  {
+    "id": "thinking_gesture_drum",
+    "category": "thinking_gesture",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[右左]?手的?[食中无]?指.*?(?:敲|叩|弹|点).*?(?:桌|台|案)[面案上子]?[^，。！？；、]*",
+    "replacements": [
+      "指尖在桌沿画了个圈",
+      "手掌按住了桌面",
+      "五指在桌上收拢又松开"
+    ]
+  },
+  {
+    "id": "thinking_gesture_cup",
+    "category": "thinking_gesture",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:修长的)?手指.*?(?:摩挲|把玩|转动|抚摸).*?(?:杯[沿壁子]?|盏|茶碗|酒杯|棋子|玉佩)[^，。！？；、]*",
+    "replacements": [
+      "手指停了下来",
+      "手上的动作顿了顿",
+      "手指收了回去"
+    ]
+  },
+  {
+    "id": "generic_posture_arms",
+    "category": "generic_posture",
+    "type": "full",
+    "severity": "replace",
+    "detect": "双手(?:交叉|抱|环).*?(?:胸前|胸口)[^，。！？；、]*",
+    "replacements": [
+      "两手撑在桌上",
+      "一手搭在椅背上",
+      "两手插进袖子里"
+    ]
+  },
+  {
+    "id": "generic_smile",
+    "category": "generic_smile",
+    "type": "full",
+    "severity": "replace",
+    "detect": "嘴角.*?(?:微微|轻轻|缓缓)?(?:上扬|勾起|翘起|扬起|弯起)[^，。！？；、]*",
+    "replacements": [
+      "嘴唇弯了弯",
+      "脸上露出点笑意",
+      "表情松了松",
+      "笑意从眼底漫出来",
+      "脸上柔和了几分"
+    ]
+  },
+  {
+    "id": "generic_brow",
+    "category": "generic_brow",
+    "type": "full",
+    "severity": "replace",
+    "detect": "眉[头梢].*?(?:微微|轻轻|不易察觉地)?(?:蹙起|皱起|蹙了蹙|皱了皱|一挑|上挑)[^，。！？；、]*",
+    "replacements": [
+      "脸色沉了沉",
+      "表情收紧了",
+      "额头现出几道纹路",
+      "神情变了变",
+      "面上多了几分不耐"
+    ]
+  },
+  {
+    "id": "emotion_flash",
+    "category": "emotion_flash",
+    "type": "prefix",
+    "severity": "replace",
+    "detect": "眼[中底里神].*?闪过一[丝抹道缕]",
+    "replacements": [
+      "目光中多了几分",
+      "眼里有了一点",
+      "带着几分",
+      "透出一种",
+      "流露出些许"
+    ],
+    "suffix_type": "emotion_word"
+  },
+  {
+    "id": "emotion_flash_flicker",
+    "category": "emotion_flash",
+    "type": "full",
+    "severity": "replace",
+    "detect": "目光.*?(?:微微|不易察觉地)?(?:闪烁|闪动|一闪)[^，。！？；、]*",
+    "replacements": [
+      "目光定了定",
+      "视线停了一下",
+      "眼神晃了晃"
+    ]
+  },
+  {
+    "id": "pupil_cliche",
+    "category": "pupil_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "瞳孔.*?(?:微微|猛然)?(?:收缩|一缩|紧缩|放大)[^，。！？；、]*",
+    "replacements": [
+      "神色微变",
+      "表情一僵",
+      "目光一凛"
+    ]
+  },
+  {
+    "id": "inner_feeling",
+    "category": "inner_feeling",
+    "type": "prefix",
+    "severity": "replace",
+    "detect": "(?:心中|心里|内心).*?(?:涌起|升起|泛起|浮起).*?(?:一股|一阵|一丝)",
+    "replacements": [
+      "隐隐觉出了些",
+      "开始感到了",
+      "胸口浮起一点",
+      "慢慢察觉到了",
+      "有了一种说不上来的"
+    ],
+    "suffix_type": "abstract_noun"
+  },
+  {
+    "id": "auto_action",
+    "category": "auto_action",
+    "type": "modifier",
+    "severity": "replace",
+    "detect": "(?:不自觉|不由自主|下意识)地",
+    "replacements": [
+      "本能地",
+      "无意识地",
+      "反射性地"
+    ]
+  },
+  {
+    "id": "poetic_filler",
+    "category": "poetic_filler",
+    "type": "full",
+    "severity": "replace",
+    "detect": "仿佛.*?(?:在|要).*?(?:诉说|倾诉|传达)[^，。！？；、]*",
+    "replacements": [
+      "带着某种说不出的东西",
+      "有了些旁人看不懂的意味",
+      "变得有些遥远"
+    ]
+  },
+  {
+    "id": "vague_emotion",
+    "category": "vague_emotion",
+    "type": "prefix",
+    "severity": "replace",
+    "detect": "一种难以言喻的",
+    "replacements": [
+      "说不清的",
+      "从没体验过的",
+      "陌生的"
+    ],
+    "suffix_type": "abstract_noun"
+  },
+  {
+    "id": "frozen_air",
+    "category": "frozen_air",
+    "type": "full",
+    "severity": "replace",
+    "detect": "空气.*?(?:仿佛|似乎|好像).*?(?:凝固|凝结|静止|冻结)[^，。！？；、]*",
+    "replacements": [
+      "空气沉了下来",
+      "四下里静得发闷",
+      "空气变得黏稠起来"
+    ]
+  },
+  {
+    "id": "spreading_silence",
+    "category": "spreading_silence",
+    "type": "full",
+    "severity": "replace",
+    "detect": "沉默(?:在[^，。！？；、]*?)?(?:蔓延|弥漫|笼罩)[^，。！？；、]*",
+    "replacements": [
+      "沉默拖得越来越长",
+      "安静变得有些难熬",
+      "沉默压在头顶上"
+    ]
+  },
+  {
+    "id": "atmosphere_shift",
+    "category": "atmosphere_shift",
+    "type": "full",
+    "severity": "replace",
+    "detect": "气氛.*?(?:变得|陡然|瞬间).*?(?:微妙|紧张|凝重)[^，。！？；、]*",
+    "replacements": [
+      "气氛绷了起来",
+      "场面一时有些僵",
+      "空气里多了股压迫感"
+    ]
+  },
+  {
+    "id": "spine_chill",
+    "category": "spine_chill",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:一股|一阵).*?(?:寒意|凉意).*?(?:从|沿).*?(?:脊背|脊椎|后背|尾椎).*?(?:升起|蔓延|窜上)[^，。！？；、]*",
+    "replacements": [
+      "后背的汗毛竖了起来",
+      "身上起了一层鸡皮疙瘩",
+      "冷汗渗了出来"
+    ]
+  },
+  {
+    "id": "throat_bob",
+    "category": "throat_bob",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:喉结|喉头).*?(?:上下|微微).*?(?:滚动|滑动|一动)[^，。！？；、]*",
+    "replacements": [
+      "脖子上的筋绷了一下",
+      "喉咙发紧",
+      "嗓子像是被什么堵住了"
+    ]
+  },
+  {
+    "id": "fist_clench",
+    "category": "fist_clench",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:攥紧|握紧|捏紧)了(?:拳头|拳|双拳)[^，。！？；、]*",
+    "replacements": [
+      "指甲掐进了掌心",
+      "手指收紧了",
+      "手背上青筋凸起",
+      "十指扣在了一起",
+      "两手攥成了铁锤"
+    ]
+  },
+  {
+    "id": "deep_breath",
+    "category": "breath_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "深深(?:地)?(?:吸|呼)了(?:一)?口(?:气|长气)[^，。！？；、]*",
+    "replacements": [
+      "胸口起伏了一下",
+      "鼻翼张了张",
+      "停了一拍才开口"
+    ]
+  },
+  {
+    "id": "gasp_cold",
+    "category": "breath_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:不由得|不禁|忍不住)?倒吸了?一口(?:凉|冷)气[^，。！？；、]*",
+    "replacements": [
+      "愣了一下",
+      "气息一滞",
+      "喉咙里发出一声短促的气音"
+    ]
+  },
+  {
+    "id": "fate_gears",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "命运的齿轮.*?(?:开始|仿佛|似乎)?(?:转动|旋转|运转)[^，。！？；、]*",
+    "replacements": [
+      "事情开始变了",
+      "一切从这里岔了出去",
+      "转折来得毫无预兆"
+    ]
+  },
+  {
+    "id": "painting_metaphor",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:宛如|犹如|像是|仿佛)一幅.*?(?:画卷|图画|油画)[^，。！？；、]*",
+    "replacements": [
+      "看得人挪不开眼",
+      "让人一时忘了说话",
+      "好看得不太真实"
+    ]
+  },
+  {
+    "id": "stone_ripple",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:像|如同|好像|仿佛).*?(?:石子|石头|石块).*?(?:砸进|落入|投入|扔进).*?(?:水面|心湖|湖面)[^，。！？；、]*",
+    "replacements": [
+      "带来的冲击不小",
+      "砸得人一愣",
+      "落下来就没再收回去"
+    ]
+  },
+  {
+    "id": "lightning_strike",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:仿佛|如同|像是?)一道(?:霹雳|闪电|雷).*?(?:打入|劈入|击中|划过)[^，。！？；、]*",
+    "replacements": [
+      "来得又快又狠",
+      "劈头盖脸地砸了下来",
+      "毫无预兆地击中了要害"
+    ]
+  },
+  {
+    "id": "despair_vines",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:绝望|恐惧|不安)的(?:藤蔓|荆棘|根须).*?(?:缠住|缠绕|蔓延|滋长|攀上)[^，。！？；、]*",
+    "replacements": [
+      "那种感觉越来越重",
+      "胸口闷得喘不上气",
+      "整个人像泡在冷水里"
+    ]
+  },
+  {
+    "id": "ripple_wave",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:心中|心里|内心|心头).*?泛起.*?(?:波澜|涟漪|波纹)[^，。！？；、]*",
+    "replacements": [
+      "心里不太平静",
+      "有些触动",
+      "心思活泛了起来"
+    ]
+  },
+  {
+    "id": "eye_rim_red",
+    "category": "eye_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "眼[眶圈].*?(?:泛红|湿润|发红|红了|热了|发酸|酸了)[^，。！？；、]*",
+    "replacements": [
+      "鼻子一酸",
+      "视线有些模糊",
+      "眼睛涩得厉害"
+    ]
+  },
+  {
+    "id": "physiological_tears",
+    "category": "eye_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:落下|流下|掉下|滑落)了?(?:一行|一滴|两行)?生理性(?:的)?泪水[^，。！？；、]*",
+    "replacements": [
+      "眼泪掉了下来",
+      "泪水顺着脸滑了下去",
+      "眼睛湿了"
+    ]
+  },
+  {
+    "id": "heart_sink",
+    "category": "heart_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "心[中里头]?.*?(?:猛地|猛然)?(?:一沉|一紧|一颤|一痛|一揪)[^，。！？；、]*",
+    "replacements": [
+      "胃里翻了一下",
+      "身上的力气抽走了几分",
+      "整个人僵了一瞬"
+    ]
+  },
+  {
+    "id": "bitter_smile",
+    "category": "smile_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:露出|挤出|浮现出?|勉强).*?(?:一丝|一个|一抹)?(?:苦笑|苦涩的笑|勉强的笑)[^，。！？；、]*",
+    "replacements": [
+      "嘴巴动了动没说话",
+      "笑了一下但眼睛没笑",
+      "扯了扯嘴角"
+    ]
+  },
+  {
+    "id": "sly_smile",
+    "category": "smile_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:狡黠|狡猾|意味深长)(?:地|的)(?:一笑|笑了笑|笑了一下)[^，。！？；、]*",
+    "replacements": [
+      "眯了眯眼",
+      "表情变得玩味",
+      "嘴角往一边歪了歪"
+    ]
+  },
+  {
+    "id": "body_stiffen",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:整个人|全身|身体|身子).*?(?:猛地|猛然|不由得|瞬间)?(?:一僵|一颤|一抖|一震|僵住|僵在)[^，。！？；、]*",
+    "replacements": [
+      "脚步顿了一下",
+      "手上的动作停了",
+      "整个人定在了原地"
+    ]
+  },
+  {
+    "id": "throat_sound",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "喉[间头咙].*?(?:滚出|挤出|发出|溢出|逸出).*?(?:一声|几声)?(?:低[吟叹哑沉]|闷哼|嘶哑的声|呜咽)[^，。！？；、]*",
+    "replacements": [
+      "声音哑了一下",
+      "嗓子像被攥住了",
+      "嗓音变得含糊不清"
+    ]
+  },
+  {
+    "id": "bite_lip",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:咬破|咬住|咬紧|死死咬住)了?(?:自己的)?(?:嘴唇|下唇|唇)[^，。！？；、]*",
+    "replacements": [
+      "把要说的话咽了回去",
+      "牙关紧了紧",
+      "嘴唇抿成了一条线"
+    ]
+  },
+  {
+    "id": "swallow_hard",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:艰难地|用力|使劲)?咽了(?:咽|一下)?(?:口|一口)?(?:唾沫|口水|吐沫)[^，。！？；、]*",
+    "replacements": [
+      "嗓子动了动",
+      "顿了一下才开口",
+      "喉结上下滑了一下"
+    ]
+  },
+  {
+    "id": "knuckle_white",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:指节|指尖|手指|指关节).*?(?:泛白|发白|苍白|攥得.*?白)[^，。！？；、]*",
+    "replacements": [
+      "手指掐进了掌心",
+      "指甲嵌进了皮肉",
+      "手在微微打颤"
+    ]
+  },
+  {
+    "id": "numb_mechanical",
+    "category": "numb_cliche",
+    "type": "modifier",
+    "severity": "replace",
+    "detect": "(?:机械|麻木)(?:地|的)",
+    "replacements": [
+      "木然地",
+      "迟钝地",
+      "不带表情地"
+    ]
+  },
+  {
+    "id": "notable_prefix",
+    "category": "filler_prefix",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "(?:值得注意的是|需要指出的是|不难看出)",
+    "replacements": []
+  },
+  {
+    "id": "not_only_but_also",
+    "category": "formula_sentence",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "这不仅仅是.*?更是",
+    "replacements": []
+  },
+  {
+    "id": "pivotal_role",
+    "category": "empty_emphasis",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "(?:扮演|起)着(?:举足轻重|至关重要|不可或缺)的(?:角色|作用)",
+    "replacements": []
+  },
+  {
+    "id": "deep_explore",
+    "category": "empty_emphasis",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "深入(?:探讨|探索|挖掘|剖析).*?(?:内涵|本质|可能性|边界)",
+    "replacements": []
+  },
+  {
+    "id": "summary_prefix",
+    "category": "filler_prefix",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "(?:总而言之|综上所述|总的来说)",
+    "replacements": []
+  }
+]

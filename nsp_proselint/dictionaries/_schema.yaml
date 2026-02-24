@@ -1,0 +1,98 @@
+# nsp-proselint Dictionary Entry Schema
+# Version: 0.1.0
+#
+# Each dictionary file (zh_CN.yaml, en.yaml) must conform to this schema.
+# See docs/design/dictionary-spec.md for full documentation.
+
+schema:
+  version: "0.1.0"
+
+  dictionary_root:
+    required:
+      - version     # string, semver
+      - language     # string, locale code (zh_CN, en, zh_TW, ja)
+      - entries      # list of entry objects
+
+  entry:
+    required:
+      id:            # string, unique, snake_case
+        type: string
+        pattern: "^[a-z][a-z0-9_]+$"
+
+      category:      # string, from standard taxonomy
+        type: string
+        enum:
+          - thinking_gesture
+          - generic_posture
+          - generic_smile
+          - generic_brow
+          - emotion_flash
+          - pupil_cliche
+          - inner_feeling
+          - auto_action
+          - poetic_filler
+          - vague_emotion
+          - frozen_air
+          - spreading_silence
+          - atmosphere_shift
+          - spine_chill
+          - throat_bob
+          - fist_clench
+          - formulaic_structure
+          # extensible -- new categories can be added
+
+      type:          # replacement strategy type
+        type: string
+        enum:
+          - full       # regex matches entire clause content; replacement is standalone
+          - prefix     # regex matches cliche prefix; semantic suffix preserved
+          - modifier   # regex matches modifier word only; surrounding structure preserved
+
+      severity:      # action to take on match
+        type: string
+        enum:
+          - replace      # detect AND replace with synonym
+          - detect_only  # detect and report, no replacement
+
+      detect:        # regex pattern (Python re compatible)
+        type: string
+
+      replacements:  # list of synonym alternatives
+        type: list[string]
+        min_items: 2       # for severity: replace
+        min_items_detect: 0  # for severity: detect_only
+
+      test_cases:    # validation examples
+        type: list[test_case]
+        min_items: 2
+
+    optional:
+      suffix_type:   # for type: prefix -- grammatical type of remaining suffix
+        type: string
+        enum:
+          - emotion_word    # 坚定, 复杂, 悲伤
+          - action_word     # 握紧, 后退
+          - abstract_noun   # 感觉, 情绪, 压力
+          - adjective       # 深沉, 莫名
+
+      negative_cases:  # strings that should NOT match
+        type: list[string]
+        min_items: 1    # recommended
+
+      notes:         # human-readable explanation
+        type: string
+
+      source:        # where pattern was first observed
+        type: string
+
+  test_case:
+    required:
+      input:           # full clause containing the cliche
+        type: string
+      valid_outputs:   # expected results after replacement
+        type: list[string]
+        min_items: 1
+
+    optional:
+      suffix:          # for type: prefix -- the semantic content after match
+        type: string

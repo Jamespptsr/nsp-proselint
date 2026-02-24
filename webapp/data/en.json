@@ -1,0 +1,327 @@
+[
+  {
+    "id": "en_raised_eyebrow",
+    "category": "generic_brow",
+    "type": "full",
+    "severity": "replace",
+    "detect": "raised an eyebrow",
+    "replacements": [
+      "looked skeptical",
+      "paused",
+      "gave a questioning look",
+      "tilted the head slightly",
+      "waited for an explanation"
+    ]
+  },
+  {
+    "id": "en_corner_smile",
+    "category": "generic_smile",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:[Aa]n? )?(?:smirk|smile) (?:tugged|played|danced) at (?:the corner of )?(?:his|her|their) lips",
+    "replacements": [
+      "almost smiled",
+      "fought back a grin",
+      "allowed a thin smile",
+      "the mouth softened",
+      "amusement crept in"
+    ]
+  },
+  {
+    "id": "en_held_breath",
+    "category": "inner_feeling",
+    "type": "full",
+    "severity": "replace",
+    "detect": "let out a breath (?:he|she|they) didn'?t know (?:he|she|they) (?:had been |was |were? )?holding",
+    "replacements": [
+      "exhaled slowly",
+      "let the tension go",
+      "relaxed by a fraction",
+      "felt the tightness leave",
+      "unclenched something inside"
+    ]
+  },
+  {
+    "id": "en_eye_shift",
+    "category": "emotion_flash",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Ss]omething (?:shifted|changed|flickered) (?:in|behind) (?:his|her|their) eyes",
+    "replacements": [
+      "the expression shifted",
+      "a new awareness crossed that face",
+      "a change registered",
+      "attention sharpened",
+      "the look became guarded"
+    ]
+  },
+  {
+    "id": "en_weight_shoulders",
+    "category": "inner_feeling",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:[Tt]he |[Aa] )?(?:heavy |crushing )?(?:weight|burden) (?:of .+? )?settled (?:on|over|across) (?:his|her|their) shoulders",
+    "replacements": [
+      "a sudden tiredness hit",
+      "exhaustion settled in",
+      "energy drained away"
+    ]
+  },
+  {
+    "id": "en_finger_drumming",
+    "category": "thinking_gesture",
+    "type": "full",
+    "severity": "replace",
+    "detect": "fingers? (?:drummed|tapped|rapped) (?:on |against )(?:the )?(?:table|desk|surface)",
+    "replacements": [
+      "fingers went still on the table",
+      "hand pressed flat against the desk",
+      "fingers spread out on the surface"
+    ]
+  },
+  {
+    "id": "en_couldnt_help",
+    "category": "auto_action",
+    "type": "prefix",
+    "severity": "replace",
+    "detect": "couldn'?t help but ",
+    "replacements": [
+      "had to ",
+      "wanted to ",
+      "began to "
+    ],
+    "suffix_type": "action_word"
+  },
+  {
+    "id": "en_stone_lake",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Ll]ike a (?:stone|pebble|rock) (?:dropped|thrown|tossed) (?:in(?:to)?|on) (?:a )?(?:calm |still )?(?:lake|pond|pool|water)",
+    "replacements": [
+      "hit without warning",
+      "landed like a slap",
+      "struck with sudden force"
+    ]
+  },
+  {
+    "id": "en_vines_despair",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:[Vv]ines|[Tt]endrils|[Rr]oots) of (?:despair|fear|dread|anxiety) (?:wrapped|curled|coiled|crept|spread) (?:around|through|over) (?:him|her|them|\\w+)",
+    "replacements": [
+      "the dread thickened",
+      "fear pressed in from every side",
+      "panic tightened its hold"
+    ]
+  },
+  {
+    "id": "en_dagger_blow",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Ll]ike a (?:physical blow|punch to the gut|dagger to the (?:chest|heart)|slap (?:in|across) the face)",
+    "replacements": [
+      "hard enough to stagger",
+      "with a force that left no room to think",
+      "sudden and total"
+    ]
+  },
+  {
+    "id": "en_drowning_lifeline",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Ll]ike (?:drowning|sinking) and (?:grasping|reaching|clutching) for (?:a )?(?:lifeline|driftwood|something solid)",
+    "replacements": [
+      "desperate and losing ground",
+      "scrambling for anything to hold onto",
+      "past the point of steady thinking"
+    ]
+  },
+  {
+    "id": "en_vision_blurred",
+    "category": "eye_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:[Vv]ision|[Ss]ight) (?:blurred|swam|wavered) with (?:unshed |un-shed )?tears",
+    "replacements": [
+      "eyes stung",
+      "had to blink hard",
+      "jaw tightened against the sting"
+    ]
+  },
+  {
+    "id": "en_throat_sound",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Aa] (?:sound|sob|sigh|groan|whimper) (?:tore|ripped|escaped|slipped) from (?:his|her|their) throat",
+    "replacements": [
+      "a noise came out, low and unsteady",
+      "something broke in the silence",
+      "the sound that escaped was barely human"
+    ]
+  },
+  {
+    "id": "en_wounded_animal",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:whimpered|cried|sounded|keened) like a (?:wounded|injured|dying|cornered) animal",
+    "replacements": [
+      "made a sound that did not belong in a human mouth",
+      "let out a noise too raw for words",
+      "broke into something between a cry and a gasp"
+    ]
+  },
+  {
+    "id": "en_bit_lip_blood",
+    "category": "body_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Bb]it (?:(?:his|her|their) )?lip(?:s)? (?:until|till|hard enough to) (?:(?:he|she|they) )?(?:tasted|drew|draw) (?:copper|blood|iron)",
+    "replacements": [
+      "pressed lips together until they went white",
+      "clenched teeth hard enough to ache",
+      "held everything behind a locked jaw"
+    ]
+  },
+  {
+    "id": "en_sinking_stomach",
+    "category": "inner_feeling",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Aa] sinking (?:feeling|sensation) in the pit of (?:his|her|their) stomach",
+    "replacements": [
+      "a cold lurch in the gut",
+      "stomach dropping out",
+      "something heavy settling behind the ribs"
+    ]
+  },
+  {
+    "id": "en_eyes_widened",
+    "category": "expression_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:[Hh]is|[Hh]er|[Tt]heir) eyes widened (?:in|with) (?:surprise|shock|disbelief|horror|fear)",
+    "replacements": [
+      "went very still",
+      "the reaction was instant and visible",
+      "froze for half a second"
+    ]
+  },
+  {
+    "id": "en_sly_smirk",
+    "category": "expression_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Aa] (?:sly|cunning|knowing|mischievous) (?:smirk|grin|smile) (?:played|spread|crept|appeared) (?:on|across|over) (?:his|her|their) (?:lips|face)",
+    "replacements": [
+      "looked like someone holding a winning hand",
+      "wore an expression that gave nothing away",
+      "the amusement was barely hidden"
+    ]
+  },
+  {
+    "id": "en_teasing_glint",
+    "category": "expression_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Aa] (?:teasing|mocking|playful|wicked) (?:glint|gleam|spark|light) in (?:his|her|their) eyes",
+    "replacements": [
+      "something sharp behind the casual look",
+      "eyes that said more than the words did",
+      "a look that dared a response"
+    ]
+  },
+  {
+    "id": "en_casual_weather",
+    "category": "tone_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:[Ww]ith a tone|[Ii]n a (?:tone|voice)) as (?:casual|calm|flat) as (?:if )?(?:discussing|talking about|mentioning) the weather",
+    "replacements": [
+      "flat and even",
+      "without inflection",
+      "steady enough to unsettle"
+    ]
+  },
+  {
+    "id": "en_imaginary_glasses",
+    "category": "mannerism_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "(?:adjusted|pushed up|straightened) (?:(?:his|her|their) )?(?:non-?existent|imaginary|invisible|phantom) glasses",
+    "replacements": [
+      "touched the bridge of the nose out of habit",
+      "made an absent-minded gesture",
+      "paused with a hand half-raised"
+    ]
+  },
+  {
+    "id": "en_mix_washed",
+    "category": "emotion_cliche",
+    "type": "full",
+    "severity": "replace",
+    "detect": "[Aa] mix (?:of|between) \\w+ and \\w+ (?:washed|swept|crashed|flooded) over",
+    "replacements": [
+      "too many feelings hit at once",
+      "the reaction was tangled and immediate",
+      "everything collided inside"
+    ]
+  },
+  {
+    "id": "en_mechanically",
+    "category": "numb_cliche",
+    "type": "modifier",
+    "severity": "replace",
+    "detect": "(?:mechanically|robotically|numbly) ",
+    "replacements": [
+      "dully ",
+      "on autopilot, ",
+      "without thinking, "
+    ]
+  },
+  {
+    "id": "en_delve",
+    "category": "empty_emphasis",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "[Dd]elve(?:s|d)? (?:into|deeper into) (?:the )?\\w+",
+    "replacements": []
+  },
+  {
+    "id": "en_tapestry",
+    "category": "metaphor_cliche",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "(?:the |a )?(?:vast |rich |intricate )?tapestry of",
+    "replacements": []
+  },
+  {
+    "id": "en_fast_paced_world",
+    "category": "cliche_opener",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "[Ii]n today'?s (?:fast-paced|digital|ever-changing|modern|rapidly evolving) (?:world|age|era|landscape)",
+    "replacements": []
+  },
+  {
+    "id": "en_testament",
+    "category": "empty_emphasis",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "[Aa] testament to (?:his|her|their|its|the) \\w+",
+    "replacements": []
+  },
+  {
+    "id": "en_unlock_power",
+    "category": "empty_emphasis",
+    "type": "full",
+    "severity": "detect_only",
+    "detect": "[Uu]nlock(?:s|ing)? the (?:power|potential|secrets?) of",
+    "replacements": []
+  }
+]
